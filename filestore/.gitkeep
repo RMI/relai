@@ -1,0 +1,10 @@
+# Logs
+*.log
+
+# OS and IDE stuff
+.DS_Store
+.idea/
+.vscode/
+
+# Other project-specific files
+*.env

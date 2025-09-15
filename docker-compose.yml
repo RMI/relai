@@ -1,0 +1,13 @@
+services:
+  frontend:
+    build:
+      context: ./frontend
+    ports:
+      - "${PBTAR_FRONTEND_PORT:-3000}:3000"
+    volumes:
+    - ./filestore:/config
+  backend:
+    build:
+      context: ./backend
+    volumes:
+    - ./filestore:/config
