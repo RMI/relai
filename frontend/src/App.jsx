@@ -2,8 +2,11 @@ import React, { useState } from 'react';
 
 import { PageLayout } from './components/PageLayout';
 import { loginRequest } from './authConfig';
-import { callMsGraph } from './graph';
+import { getGraphResponse, getProfile, getChatList, getEmail } from './graph';
 import { ProfileData } from './components/ProfileData';
+import { ChatListData } from './components/ChatListData';
+import { EmailData } from './components/EmailData';
+import { APIData } from './components/APIData';
 
 import { AuthenticatedTemplate, UnauthenticatedTemplate, useMsal } from '@azure/msal-react';
 import './App.css';
@@ -25,7 +28,7 @@ const ProfileContent = () => {
                 account: accounts[0],
             })
             .then((response) => {
-                callMsGraph(response.accessToken).then((response) => setGraphData(response));
+                getProfile(response.accessToken).then((response) => setGraphData(response));
             });
     }
 
@@ -43,6 +46,101 @@ const ProfileContent = () => {
     );
 };
 
+const ChatListContent = () => {
+    const { instance, accounts } = useMsal();
+    const [graphData, setGraphData] = useState(null);
+
+    function RequestData() {
+        // Silently acquires an access token which is then attached to a request for MS Graph data
+        instance
+            .acquireTokenSilent({
+                ...loginRequest,
+                account: accounts[0],
+            })
+            .then((response) => {
+                getChatList(response.accessToken).then((response) => setGraphData(response));
+            });
+    }
+
+    return (
+        <>
+            <h5 className="chatList">Chat List</h5>
+            {graphData ? (
+                <ChatListData graphData={graphData} />
+            ) : (
+                <Button variant="secondary" onClick={RequestData}>
+                    Request Chat List
+                </Button>
+            )}
+        </>
+    );
+};
+
+const EmailContent = () => {
+    const { instance, accounts } = useMsal();
+    const [graphData, setGraphData] = useState(null);
+
+    function RequestData() {
+        // Silently acquires an access token which is then attached to a request for MS Graph data
+        instance
+            .acquireTokenSilent({
+                ...loginRequest,
+                account: accounts[0],
+            })
+            .then((response) => {
+                getEmail(response.accessToken).then((response) => setGraphData(response));
+            });
+    }
+
+    return (
+        <>
+            <h5 className="email">Email</h5>
+            {graphData ? (
+                <EmailData graphData={graphData} />
+            ) : (
+                <Button variant="secondary" onClick={RequestData}>
+                    Request Email
+                </Button>
+            )}
+        </>
+    );
+};
+
+const APIContent = () => {
+    const { instance, accounts } = useMsal();
+    const [graphData, setGraphData] = useState(null);
+
+    function RequestData(formData) {
+        // Silently acquires an access token which is then attached to a request for MS Graph data
+        const url = formData.get("api_url");
+        instance
+            .acquireTokenSilent({
+                ...loginRequest,
+                account: accounts[0],
+            })
+            .then((response) => {
+                getGraphResponse(response.accessToken, url).then((response) => setGraphData(response));
+            });
+    }
+
+    return (
+        <>
+            <h5 className="api">API</h5>
+            {graphData ? (
+                <APIData graphData={graphData} />
+            ) : (
+                <form action={RequestData}>
+                    <label>
+                        API URL: <input name="api_url" />
+                    </label>
+                    <button variant="secondary" type="submit">
+                        Request API call
+                    </button>
+                </form>
+            )}
+        </>
+    );
+};
 /**
  * If a user is authenticated the ProfileContent component above is rendered. Otherwise a message indicating a user is not authenticated is rendered.
  */
@@ -51,6 +149,9 @@ const MainContent = () => {
         <div className="App">
             <AuthenticatedTemplate>
                 <ProfileContent />
+                <ChatListContent />
+                <EmailContent />
+                <APIContent />
             </AuthenticatedTemplate>
 
             <UnauthenticatedTemplate>
