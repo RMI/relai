@@ -106,6 +106,43 @@ const EmailContent = () => {
     );
 };
 
+const FileListContent = () => {
+    const { instance, accounts } = useMsal();
+    const [graphData, setGraphData] = useState(null);
+
+    function RequestData(formData) {
+        // Silently acquires an access token which is then attached to a request for MS Graph data
+        const file_path = formData.get("file_path");
+        const url = "https://graph.microsoft.com/v1.0/me/drive/root:/" + file_path + ":/children";
+        instance
+            .acquireTokenSilent({
+                ...loginRequest,
+                account: accounts[0],
+            })
+            .then((response) => {
+                getGraphResponse(response.accessToken, url).then((response) => setGraphData(response));
+            });
+    }
+
+    return (
+        <>
+            <h5 className="api">File List</h5>
+            {graphData ? (
+                <APIData graphData={graphData} />
+            ) : (
+                <form action={RequestData}>
+                    <label>
+                        File Path: <input name="file_path" />
+                    </label>
+                    <button variant="secondary" type="submit">
+                        Request File List
+                    </button>
+                </form>
+            )}
+        </>
+    );
+};
+
 const APIContent = () => {
     const { instance, accounts } = useMsal();
     const [graphData, setGraphData] = useState(null);
@@ -141,6 +178,7 @@ const APIContent = () => {
         </>
     );
 };
+
 /**
  * If a user is authenticated the ProfileContent component above is rendered. Otherwise a message indicating a user is not authenticated is rendered.
  */
@@ -151,6 +189,7 @@ const MainContent = () => {
                 <ProfileContent />
                 <ChatListContent />
                 <EmailContent />
+                <FileListContent />
                 <APIContent />
             </AuthenticatedTemplate>
 

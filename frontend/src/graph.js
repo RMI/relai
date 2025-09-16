@@ -29,3 +29,7 @@ export async function getEmail(accessToken) {
 export async function getChatList(accessToken) {
     return getGraphResponse(accessToken, "https://graph.microsoft.com/v1.0/me/chats")
 }
+
+export async function getFileList(accessToken) {
+    return getGraphResponse(accessToken, "https://graph.microsoft.com/v1.0/me/chats")
+}
