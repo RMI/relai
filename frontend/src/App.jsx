@@ -6,6 +6,7 @@ import { getGraphResponse, getProfile, getChatList, getEmail } from './graph';
 import { ProfileData } from './components/ProfileData';
 import { ChatListData } from './components/ChatListData';
 import { EmailData } from './components/EmailData';
+import { FileListData } from './components/FileListData';
 import { APIData } from './components/APIData';
 
 import { AuthenticatedTemplate, UnauthenticatedTemplate, useMsal } from '@azure/msal-react';
@@ -128,7 +129,7 @@ const FileListContent = () => {
         <>
             <h5 className="api">File List</h5>
             {graphData ? (
-                <APIData graphData={graphData} />
+                <FileListData graphData={graphData} />
             ) : (
                 <form action={RequestData}>
                     <label>
