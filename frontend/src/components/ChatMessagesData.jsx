@@ -11,7 +11,7 @@ export const ChatMessagesData = (props) => {
         type: "chat message",
         date_time: e.lastModifiedDateTime,
         author: e.from.user.displayName,
-        content: e.body.content,
+        content: new DOMParser().parseFromString(e.body.content, 'text/html').body.textContent || "",
         subject: e.subject
     }));
     return (
