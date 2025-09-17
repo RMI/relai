@@ -2,12 +2,13 @@ import React, { useState } from 'react';
 
 import { PageLayout } from './components/PageLayout';
 import { loginRequest } from './authConfig';
-import { getGraphResponse, getProfile, getChannelList, getChannelMessageList, getChatList, getChatMessageList, getEmail, getEmailList, getTeamList } from './graph';
+import { getGraphResponse, getProfile, getChannelList, getChannelMessageList, getChatList, getChatMessageList, getChatMessages, getEmail, getEmailList, getTeamList } from './graph';
 import { ProfileData } from './components/ProfileData';
 import { ChannelListData } from './components/ChannelListData';
 import { ChannelMessageListData } from './components/ChannelMessageListData';
 import { ChatListData } from './components/ChatListData';
 import { ChatMessageListData } from './components/ChatMessageListData';
+import { ChatMessagesData } from './components/ChatMessagesData';
 import { EmailData } from './components/EmailData';
 import { EmailListData } from './components/EmailListData';
 import { FileListData } from './components/FileListData';
@@ -357,6 +358,42 @@ const EmailContent = () => {
     );
 };
 
+const ChatMessagesContent = () => {
+    const { instance, accounts } = useMsal();
+    const [graphData, setGraphData] = useState(null);
+
+    function RequestData(formData) {
+        // Silently acquires an access token which is then attached to a request for MS Graph data
+        const chat_id = formData.get("chat_id");
+        instance
+            .acquireTokenSilent({
+                ...loginRequest,
+                account: accounts[0],
+            })
+            .then((response) => {
+                getChatMessages(response.accessToken, chat_id).then((response) => setGraphData(response));
+            });
+    }
+
+    return (
+        <>
+            <h5 className="email">Chat Messages</h5>
+            {graphData ? (
+                <ChatMessagesData graphData={graphData} />
+            ) : (
+                <form action={RequestData}>
+                    <label>
+                        Chat ID: <input name="chat_id" />
+                    </label>
+                    <button variant="secondary" type="submit">
+                        Get Chat Messages
+                    </button>
+                </form>
+            )}
+        </>
+    );
+};
+
 /**
  * If a user is authenticated the ProfileContent component above is rendered. Otherwise a message indicating a user is not authenticated is rendered.
  */
@@ -375,6 +412,7 @@ const MainContent = () => {
                 <APIContent />
                 <hr />
                 <EmailContent />
+                <ChatMessagesContent />
             </AuthenticatedTemplate>
 
             <UnauthenticatedTemplate>
