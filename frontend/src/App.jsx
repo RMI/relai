@@ -2,11 +2,12 @@ import React, { useState } from 'react';
 
 import { PageLayout } from './components/PageLayout';
 import { loginRequest } from './authConfig';
-import { getGraphResponse, getProfile, getChatList, getEmail } from './graph';
+import { getGraphResponse, getProfile, getChatList, getEmail, getTeamList } from './graph';
 import { ProfileData } from './components/ProfileData';
 import { ChatListData } from './components/ChatListData';
 import { EmailData } from './components/EmailData';
 import { FileListData } from './components/FileListData';
+import { TeamListData } from './components/TeamListData';
 import { APIData } from './components/APIData';
 
 import { AuthenticatedTemplate, UnauthenticatedTemplate, useMsal } from '@azure/msal-react';
@@ -71,6 +72,36 @@ const ChatListContent = () => {
             ) : (
                 <Button variant="secondary" onClick={RequestData}>
                     Request Chat List
+                </Button>
+            )}
+        </>
+    );
+};
+
+const TeamListContent = () => {
+    const { instance, accounts } = useMsal();
+    const [graphData, setGraphData] = useState(null);
+
+    function RequestData() {
+        // Silently acquires an access token which is then attached to a request for MS Graph data
+        instance
+            .acquireTokenSilent({
+                ...loginRequest,
+                account: accounts[0],
+            })
+            .then((response) => {
+                getTeamList(response.accessToken).then((response) => setGraphData(response));
+            });
+    }
+
+    return (
+        <>
+            <h5 className="teamList">Team List</h5>
+            {graphData ? (
+                <TeamListData graphData={graphData} />
+            ) : (
+                <Button variant="secondary" onClick={RequestData}>
+                    Request Team List
                 </Button>
             )}
         </>
@@ -189,6 +220,7 @@ const MainContent = () => {
             <AuthenticatedTemplate>
                 <ProfileContent />
                 <ChatListContent />
+                <TeamListContent />
                 <EmailContent />
                 <FileListContent />
                 <APIContent />

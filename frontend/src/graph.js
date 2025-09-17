@@ -33,3 +33,7 @@ export async function getChatList(accessToken) {
 export async function getFileList(accessToken) {
     return getGraphResponse(accessToken, "https://graph.microsoft.com/v1.0/me/chats")
 }
+
+export async function getTeamList(accessToken) {
+    return getGraphResponse(accessToken, "https://graph.microsoft.com/v1.0/teams")
+}
