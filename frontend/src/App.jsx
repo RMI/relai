@@ -2,14 +2,13 @@ import React, { useState } from 'react';
 
 import { PageLayout } from './components/PageLayout';
 import { loginRequest } from './authConfig';
-import { getGraphResponse, getProfile, getChannelList, getChannelMessageList, getChatList, getChatMessages, getEmail, getEmailList, getTeamList } from './graph';
+import { getGraphResponse, getProfile, getChannelList, getChannelMessageList, getChatList, getChatMessages, getEmail, getTeamList } from './graph';
 import { ProfileData } from './components/ProfileData';
 import { ChannelListData } from './components/ChannelListData';
 import { ChannelMessageListData } from './components/ChannelMessageListData';
 import { ChatListData } from './components/ChatListData';
 import { ChatMessagesData } from './components/ChatMessagesData';
 import { EmailData } from './components/EmailData';
-import { EmailListData } from './components/EmailListData';
 import { FileListData } from './components/FileListData';
 import { TeamListData } from './components/TeamListData';
 import { APIData } from './components/APIData';
@@ -188,36 +187,6 @@ const ChannelMessageListContent = () => {
     );
 };
 
-const EmailListContent = () => {
-    const { instance, accounts } = useMsal();
-    const [graphData, setGraphData] = useState(null);
-
-    function RequestData() {
-        // Silently acquires an access token which is then attached to a request for MS Graph data
-        instance
-            .acquireTokenSilent({
-                ...loginRequest,
-                account: accounts[0],
-            })
-            .then((response) => {
-                getEmailList(response.accessToken).then((response) => setGraphData(response));
-            });
-    }
-
-    return (
-        <>
-            <h5 className="email">Email List</h5>
-            {graphData ? (
-                <EmailListData graphData={graphData} />
-            ) : (
-                <Button variant="secondary" onClick={RequestData}>
-                    Request Email List
-                </Button>
-            )}
-        </>
-    );
-};
-
 const FileListContent = () => {
     const { instance, accounts } = useMsal();
     const [graphData, setGraphData] = useState(null);
@@ -369,7 +338,6 @@ const MainContent = () => {
                 <TeamListContent />
                 <ChannelListContent />
                 <ChannelMessageListContent />
-                <EmailListContent />
                 <FileListContent />
                 <APIContent />
                 <hr />

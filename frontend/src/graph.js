@@ -26,10 +26,6 @@ export async function getEmail(accessToken) {
     return getGraphResponse(accessToken, "https://graph.microsoft.com/v1.0/me/messages")
 }
 
-export async function getEmailList(accessToken) {
-    return getGraphResponse(accessToken, "https://graph.microsoft.com/v1.0/me/messages")
-}
-
 export async function getChannelList(accessToken, team_id) {
     return getGraphResponse(accessToken, "https://graph.microsoft.com/v1.0/teams/" + team_id + "/channels")
 }
