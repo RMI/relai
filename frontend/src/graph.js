@@ -22,7 +22,7 @@ export async function getProfile(accessToken) {
     return getGraphResponse(accessToken, "https://graph.microsoft.com/v1.0/me")
 }
 
-export async function getEmail(accessToken) {
+export async function getEmailList(accessToken) {
     return getGraphResponse(accessToken, "https://graph.microsoft.com/v1.0/me/messages")
 }
 

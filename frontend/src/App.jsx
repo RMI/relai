@@ -2,13 +2,13 @@ import React, { useState } from 'react';
 
 import { PageLayout } from './components/PageLayout';
 import { loginRequest } from './authConfig';
-import { getGraphResponse, getProfile, getChannelList, getChannelMessageList, getChatList, getChatMessageList, getEmail, getTeamList } from './graph';
+import { getGraphResponse, getProfile, getChannelList, getChannelMessageList, getChatList, getChatMessageList, getEmailList, getTeamList } from './graph';
 import { ProfileData } from './components/ProfileData';
 import { ChannelListData } from './components/ChannelListData';
 import { ChannelMessageListData } from './components/ChannelMessageListData';
 import { ChatListData } from './components/ChatListData';
 import { ChatMessageListData } from './components/ChatMessageListData';
-import { EmailData } from './components/EmailData';
+import { EmailListData } from './components/EmailListData';
 import { FileListData } from './components/FileListData';
 import { TeamListData } from './components/TeamListData';
 import { APIData } from './components/APIData';
@@ -223,7 +223,7 @@ const ChannelMessageListContent = () => {
     );
 };
 
-const EmailContent = () => {
+const EmailListContent = () => {
     const { instance, accounts } = useMsal();
     const [graphData, setGraphData] = useState(null);
 
@@ -235,18 +235,18 @@ const EmailContent = () => {
                 account: accounts[0],
             })
             .then((response) => {
-                getEmail(response.accessToken).then((response) => setGraphData(response));
+                getEmailList(response.accessToken).then((response) => setGraphData(response));
             });
     }
 
     return (
         <>
-            <h5 className="email">Email</h5>
+            <h5 className="email">Email List</h5>
             {graphData ? (
-                <EmailData graphData={graphData} />
+                <EmailListData graphData={graphData} />
             ) : (
                 <Button variant="secondary" onClick={RequestData}>
-                    Request Email
+                    Request Email List
                 </Button>
             )}
         </>
@@ -339,7 +339,7 @@ const MainContent = () => {
                 <TeamListContent />
                 <ChannelListContent />
                 <ChannelMessageListContent />
-                <EmailContent />
+                <EmailListContent />
                 <FileListContent />
                 <APIContent />
             </AuthenticatedTemplate>

@@ -1,0 +1,28 @@
+import React from "react";
+
+/**
+ * Renders information about the user obtained from MS Graph
+ * @param props
+ */
+export const EmailListData = (props) => {
+    return (
+        <div id="emaillist-div">
+            <table>
+                <thead><tr>
+                    <td style={{borderWidth: 0.5}}>Subject</td>
+                    <td style={{borderWidth: 0.5}}>Date</td>
+                    <td style={{borderWidth: 0.5}}>ID</td>
+                </tr></thead>
+                <tbody>
+                    {props.graphData.value.map((data, index) => (
+                        <tr key={index}>
+                            <td style={{borderWidth: 0.5}}>{data.subject}</td>
+                            <td style={{borderWidth: 0.5}}>{data.receivedDateTime}</td>
+                            <td style={{borderWidth: 0.5}}>{data.id}</td>
+                        </tr>
+                    ))}
+                </tbody>
+            </table>
+        </div>
+    );
+};
