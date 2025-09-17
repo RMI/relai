@@ -2,8 +2,9 @@ import React, { useState } from 'react';
 
 import { PageLayout } from './components/PageLayout';
 import { loginRequest } from './authConfig';
-import { getGraphResponse, getProfile, getChatList, getEmail, getTeamList } from './graph';
+import { getGraphResponse, getProfile, getChannelList, getChatList, getEmail, getTeamList } from './graph';
 import { ProfileData } from './components/ProfileData';
+import { ChannelListData } from './components/ChannelListData';
 import { ChatListData } from './components/ChatListData';
 import { EmailData } from './components/EmailData';
 import { FileListData } from './components/FileListData';
@@ -103,6 +104,42 @@ const TeamListContent = () => {
                 <Button variant="secondary" onClick={RequestData}>
                     Request Team List
                 </Button>
+            )}
+        </>
+    );
+};
+
+const ChannelListContent = () => {
+    const { instance, accounts } = useMsal();
+    const [graphData, setGraphData] = useState(null);
+
+    function RequestData(formData) {
+        // Silently acquires an access token which is then attached to a request for MS Graph data
+        const team_id = formData.get("team_id");
+        instance
+            .acquireTokenSilent({
+                ...loginRequest,
+                account: accounts[0],
+            })
+            .then((response) => {
+                getChannelList(response.accessToken, team_id).then((response) => setGraphData(response));
+            });
+    }
+
+    return (
+        <>
+            <h5 className="api">Channel List</h5>
+            {graphData ? (
+                <ChannelListData graphData={graphData} />
+            ) : (
+                <form action={RequestData}>
+                    <label>
+                        Team ID: <input name="team_id" />
+                    </label>
+                    <button variant="secondary" type="submit">
+                        Request Channel List
+                    </button>
+                </form>
             )}
         </>
     );
@@ -221,6 +258,7 @@ const MainContent = () => {
                 <ProfileContent />
                 <ChatListContent />
                 <TeamListContent />
+                <ChannelListContent />
                 <EmailContent />
                 <FileListContent />
                 <APIContent />
