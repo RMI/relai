@@ -2,12 +2,13 @@ import React, { useState } from 'react';
 
 import { PageLayout } from './components/PageLayout';
 import { loginRequest } from './authConfig';
-import { getGraphResponse, getProfile, getChannelList, getChannelMessageList, getChatList, getChatMessageList, getEmailList, getTeamList } from './graph';
+import { getGraphResponse, getProfile, getChannelList, getChannelMessageList, getChatList, getChatMessageList, getEmail, getEmailList, getTeamList } from './graph';
 import { ProfileData } from './components/ProfileData';
 import { ChannelListData } from './components/ChannelListData';
 import { ChannelMessageListData } from './components/ChannelMessageListData';
 import { ChatListData } from './components/ChatListData';
 import { ChatMessageListData } from './components/ChatMessageListData';
+import { EmailData } from './components/EmailData';
 import { EmailListData } from './components/EmailListData';
 import { FileListData } from './components/FileListData';
 import { TeamListData } from './components/TeamListData';
@@ -326,6 +327,36 @@ const APIContent = () => {
     );
 };
 
+const EmailContent = () => {
+    const { instance, accounts } = useMsal();
+    const [graphData, setGraphData] = useState(null);
+
+    function RequestData() {
+        // Silently acquires an access token which is then attached to a request for MS Graph data
+        instance
+            .acquireTokenSilent({
+                ...loginRequest,
+                account: accounts[0],
+            })
+            .then((response) => {
+                getEmail(response.accessToken).then((response) => setGraphData(response));
+            });
+    }
+
+    return (
+        <>
+            <h5 className="email">Email</h5>
+            {graphData ? (
+                <EmailData graphData={graphData} />
+            ) : (
+                <Button variant="secondary" onClick={RequestData}>
+                    Get Email
+                </Button>
+            )}
+        </>
+    );
+};
+
 /**
  * If a user is authenticated the ProfileContent component above is rendered. Otherwise a message indicating a user is not authenticated is rendered.
  */
@@ -342,6 +373,8 @@ const MainContent = () => {
                 <EmailListContent />
                 <FileListContent />
                 <APIContent />
+                <hr />
+                <EmailContent />
             </AuthenticatedTemplate>
 
             <UnauthenticatedTemplate>

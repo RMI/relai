@@ -5,24 +5,21 @@ import React from "react";
  * @param props
  */
 export const EmailData = (props) => {
+    const data = props.graphData.value;
+    // filter date
+    const result = data.map(e => ({
+        id: e.id,
+        type: "email",
+        date_time: e.receivedDateTime,
+        author: e.from.emailAddress.address,
+        content: e.body.content,
+        subject: e.subject
+    }));
     return (
-        <div id="email-div">
-            <table>
-                <thead><tr>
-                    <td style={{borderWidth: 0.5}}>Subject</td>
-                    <td style={{borderWidth: 0.5}}>Date</td>
-                    <td style={{borderWidth: 0.5}}>ID</td>
-                </tr></thead>
-                <tbody>
-                    {props.graphData.value.map((data, index) => (
-                        <tr key={index}>
-                            <td style={{borderWidth: 0.5}}>{data.subject}</td>
-                            <td style={{borderWidth: 0.5}}>{data.receivedDateTime}</td>
-                            <td style={{borderWidth: 0.5}}>{data.id}</td>
-                        </tr>
-                    ))}
-                </tbody>
-            </table>
+        <div id="api-div">
+            <pre style={{textAlign: "left"}}>
+                {JSON.stringify(result, null, 2) }
+            </pre>
         </div>
     );
 };
