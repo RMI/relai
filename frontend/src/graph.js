@@ -30,6 +30,10 @@ export async function getChannelList(accessToken, team_id) {
     return getGraphResponse(accessToken, "https://graph.microsoft.com/v1.0/teams/" + team_id + "/channels")
 }
 
+export async function getChannelMessageList(accessToken, team_id, channel_id) {
+    return getGraphResponse(accessToken, "https://graph.microsoft.com/v1.0/teams/" + team_id + "/channels/" + channel_id + "/messages")
+}
+
 export async function getChatList(accessToken) {
     return getGraphResponse(accessToken, "https://graph.microsoft.com/v1.0/me/chats")
 }

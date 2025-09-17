@@ -2,9 +2,10 @@ import React, { useState } from 'react';
 
 import { PageLayout } from './components/PageLayout';
 import { loginRequest } from './authConfig';
-import { getGraphResponse, getProfile, getChannelList, getChatList, getEmail, getTeamList } from './graph';
+import { getGraphResponse, getProfile, getChannelList, getChannelMessageList, getChatList, getEmail, getTeamList } from './graph';
 import { ProfileData } from './components/ProfileData';
 import { ChannelListData } from './components/ChannelListData';
+import { ChannelMessageListData } from './components/ChannelMessageListData';
 import { ChatListData } from './components/ChatListData';
 import { EmailData } from './components/EmailData';
 import { FileListData } from './components/FileListData';
@@ -145,6 +146,46 @@ const ChannelListContent = () => {
     );
 };
 
+const ChannelMessageListContent = () => {
+    const { instance, accounts } = useMsal();
+    const [graphData, setGraphData] = useState(null);
+
+    function RequestData(formData) {
+        // Silently acquires an access token which is then attached to a request for MS Graph data
+        const team_id = formData.get("team_id");
+        const channel_id = formData.get("channel_id");
+        instance
+            .acquireTokenSilent({
+                ...loginRequest,
+                account: accounts[0],
+            })
+            .then((response) => {
+                getChannelMessageList(response.accessToken, team_id, channel_id).then((response) => setGraphData(response));
+            });
+    }
+
+    return (
+        <>
+            <h5 className="api">Channel Message List</h5>
+            {graphData ? (
+                <ChannelMessageListData graphData={graphData} />
+            ) : (
+                <form action={RequestData}>
+                    <label>
+                        Team ID: <input name="team_id" />
+                    </label>
+                    <label>
+                        Channel ID: <input name="channel_id" />
+                    </label>
+                    <button variant="secondary" type="submit">
+                        Request Channel Message List
+                    </button>
+                </form>
+            )}
+        </>
+    );
+};
+
 const EmailContent = () => {
     const { instance, accounts } = useMsal();
     const [graphData, setGraphData] = useState(null);
@@ -259,6 +300,7 @@ const MainContent = () => {
                 <ChatListContent />
                 <TeamListContent />
                 <ChannelListContent />
+                <ChannelMessageListContent />
                 <EmailContent />
                 <FileListContent />
                 <APIContent />
