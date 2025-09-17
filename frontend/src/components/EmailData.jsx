@@ -12,7 +12,7 @@ export const EmailData = (props) => {
         type: "email",
         date_time: e.receivedDateTime,
         author: e.from.emailAddress.address,
-        content: e.body.content,
+        content: new DOMParser().parseFromString(e.body.content, 'text/html').body.textContent || "",
         subject: e.subject
     }));
     return (
