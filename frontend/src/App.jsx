@@ -178,7 +178,7 @@ const ChannelMessageListContent = () => {
     );
 };
 
-const FileListContent = () => {
+const FilesContent = () => {
     const { instance, accounts } = useMsal();
     const [graphData, setGraphData] = useState(null);
 
@@ -327,12 +327,12 @@ const MainContent = () => {
                 <ProfileContent />
                 <ChatListContent />
                 <TeamChannelsListContent />
-                <FileListContent />
                 <APIContent />
                 <hr />
                 <EmailContent />
                 <ChatMessagesContent />
                 <ChannelMessageListContent />
+                <FilesContent />
             </AuthenticatedTemplate>
 
             <UnauthenticatedTemplate>
