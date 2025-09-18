@@ -8,6 +8,9 @@ export const FilesData = (props) => {
     const data = props.graphData.value;
     const urls = data.map(d => d["@microsoft.graph.downloadUrl"]);
 
+    console.log(urls);
+
+/*
     async function get(url) {
         const config: OfficeParserConfig = {
             newlineDelimiter: " ",  // Separate new lines with a space instead of the default \n.
@@ -28,7 +31,7 @@ export const FilesData = (props) => {
     const text = get(urls[0]);
     console.log(text);
     console.log("\n\n\n\n\n\n");
-
+*/
 
     return (
         <div id="files-div">
