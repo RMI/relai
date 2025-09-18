@@ -2,15 +2,14 @@ import React, { useState } from 'react';
 
 import { PageLayout } from './components/PageLayout';
 import { loginRequest } from './authConfig';
-import { getGraphResponse, getProfile, getChannelList, getChannelMessageList, getChatList, getChatMessages, getEmail, getTeamList } from './graph';
+import { getGraphResponse, getProfile, getChannelMessageList, getChatList, getChatMessages, getEmail, getTeamList } from './graph';
 import { ProfileData } from './components/ProfileData';
-import { ChannelListData } from './components/ChannelListData';
 import { ChannelMessageListData } from './components/ChannelMessageListData';
 import { ChatListData } from './components/ChatListData';
 import { ChatMessagesData } from './components/ChatMessagesData';
 import { EmailData } from './components/EmailData';
 import { FileListData } from './components/FileListData';
-import { TeamListData } from './components/TeamListData';
+import { TeamChannelsListData } from './components/TeamChannelsListData';
 import { APIData } from './components/APIData';
 
 import { AuthenticatedTemplate, UnauthenticatedTemplate, useMsal } from '@azure/msal-react';
@@ -81,7 +80,7 @@ const ChatListContent = () => {
     );
 };
 
-const TeamListContent = () => {
+const TeamChannelsListContent = () => {
     const { instance, accounts } = useMsal();
     const [graphData, setGraphData] = useState(null);
 
@@ -93,55 +92,47 @@ const TeamListContent = () => {
                 account: accounts[0],
             })
             .then((response) => {
-                getTeamList(response.accessToken).then((response) => setGraphData(response));
+                getTeamList(response.accessToken)
+                    .then((response) => {
+                        let teams = response.value;
+                        instance
+                            .acquireTokenSilent({
+                                ...loginRequest,
+                                account: accounts[0],
+                            })
+                            .then(async (response) => {
+                                let teams_channels = teams.map((d) => {
+                                    const url = "https://graph.microsoft.com/v1.0/teams/" + d.id + "/channels";
+                                    return getGraphResponse(response.accessToken, url)
+                                        .then((response) => {
+                                            if (typeof response.value !== 'undefined') {
+                                                return response.value.map(v => ({
+                                                    ...v,
+                                                    team_id: d.id,
+                                                    team_name: d.displayName,
+                                                    team_desc: d.description
+                                                }));
+                                            } else {
+                                                return null;
+                                            }
+                                        });
+                                });
+                                teams_channels = await Promise.all(teams_channels);
+                                setGraphData(teams_channels);
+                            });
+                    });
             });
     }
 
     return (
         <>
-            <h5 className="teamList">Team List</h5>
+            <h5 className="teamChannelsList">Team Channels List</h5>
             {graphData ? (
-                <TeamListData graphData={graphData} />
+                <TeamChannelsListData graphData={graphData} />
             ) : (
                 <Button variant="secondary" onClick={RequestData}>
-                    Request Team List
+                    Request Team Channels List
                 </Button>
-            )}
-        </>
-    );
-};
-
-const ChannelListContent = () => {
-    const { instance, accounts } = useMsal();
-    const [graphData, setGraphData] = useState(null);
-
-    function RequestData(formData) {
-        // Silently acquires an access token which is then attached to a request for MS Graph data
-        const team_id = formData.get("team_id");
-        instance
-            .acquireTokenSilent({
-                ...loginRequest,
-                account: accounts[0],
-            })
-            .then((response) => {
-                getChannelList(response.accessToken, team_id).then((response) => setGraphData(response));
-            });
-    }
-
-    return (
-        <>
-            <h5 className="api">Channel List</h5>
-            {graphData ? (
-                <ChannelListData graphData={graphData} />
-            ) : (
-                <form action={RequestData}>
-                    <label>
-                        Team ID: <input name="team_id" />
-                    </label>
-                    <button variant="secondary" type="submit">
-                        Request Channel List
-                    </button>
-                </form>
             )}
         </>
     );
@@ -335,14 +326,13 @@ const MainContent = () => {
             <AuthenticatedTemplate>
                 <ProfileContent />
                 <ChatListContent />
-                <TeamListContent />
-                <ChannelListContent />
-                <ChannelMessageListContent />
                 <FileListContent />
+                <TeamChannelsListContent />
                 <APIContent />
                 <hr />
                 <EmailContent />
                 <ChatMessagesContent />
+                <ChannelMessageListContent />
             </AuthenticatedTemplate>
 
             <UnauthenticatedTemplate>
