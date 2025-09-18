@@ -9,6 +9,7 @@ export const ChatListData = (props) => {
         <div id="chatslist-div">
             <table>
                 <thead><tr>
+                    <td style={{borderWidth: 0.5}}>select</td>
                     <td style={{borderWidth: 0.5}}>Topic</td>
                     <td style={{borderWidth: 0.5}}>ID</td>
                     <td style={{borderWidth: 0.5}}>Web URL</td>
@@ -16,9 +17,14 @@ export const ChatListData = (props) => {
                 <tbody>
                     {props.graphData.value.map((data, index) => (
                         <tr key={index}>
+                            <td style={{borderWidth: 0.5}}>
+                                <input type="radio" id={data.id} name="chat_id" value={data.id} />
+                            </td>
                             <td style={{borderWidth: 0.5}}>{data.topic}</td>
                             <td style={{borderWidth: 0.5}}>{data.id}</td>
-                            <td style={{borderWidth: 0.5}}>{data.webUrl}</td>
+                            <td style={{borderWidth: 0.5}}>
+                                <a href={data.webUrl} target="blank">web URL</a>
+                            </td>
                         </tr>
                     ))}
                 </tbody>
