@@ -5,6 +5,7 @@ import React from "react";
  * @param props
  */
 export const APIData = (props) => {
+    window.data = props.graphData.value;
     return (
         <div id="api-div">
             <pre style={{textAlign: "left"}}>

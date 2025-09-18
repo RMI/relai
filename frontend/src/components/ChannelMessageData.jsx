@@ -4,14 +4,13 @@ import React from "react";
  * Renders information about the user obtained from MS Graph
  * @param props
  */
-export const EmailData = (props) => {
+export const ChannelMessageData = (props) => {
     const data = props.graphData.value;
-    // filter date
     const result = data.map(e => ({
         id: e.id,
-        type: "email",
-        date_time: e.receivedDateTime,
-        author: e.from.emailAddress.address,
+        type: "channel message",
+        date_time: e.lastModifiedDateTime,
+        author: (e.from !== null) ? e.from.user.displayName : "",
         content: new DOMParser().parseFromString(e.body.content, 'text/html').body.textContent || "",
         subject: e.subject
     }));
