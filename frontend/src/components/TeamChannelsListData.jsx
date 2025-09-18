@@ -24,10 +24,20 @@ export const TeamChannelsListData = (props) => {
                                 <input type="radio" id={data.id} name="teamchannel_id" value={data.id} />
                             </td>
                             <td style={{borderWidth: 0.5}}>{data[0].displayName}</td>
-                            <td style={{borderWidth: 0.5}}>{data[0].id}</td>
+                            <td style={{borderWidth: 0.5}}>
+                                {data[0].id}&nbsp;
+                                <button type="button" class="btn btn-primary" onClick={()=>navigator.clipboard.writeText(data[0].id)}>
+                                  <i class="bi bi-clipboard"></i>
+                                </button>
+                            </td>
                             <td style={{borderWidth: 0.5}}>{data[0].team_name}</td>
                             <td style={{borderWidth: 0.5}}>{data[0].team_desc}</td>
-                            <td style={{borderWidth: 0.5}}>{data[0].team_id}</td>
+                            <td style={{borderWidth: 0.5}}>
+                                {data[0].team_id}&nbsp;
+                                <button type="button" class="btn btn-primary" onClick={()=>navigator.clipboard.writeText(data[0].team_id)}>
+                                  <i class="bi bi-clipboard"></i>
+                                </button>
+                            </td>
                             <td style={{borderWidth: 0.5}}>
                                 <a href={data[0].webUrl} target="blank">web URL</a>
                             </td>

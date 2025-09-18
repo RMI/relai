@@ -21,7 +21,12 @@ export const ChatListData = (props) => {
                                 <input type="radio" id={data.id} name="chat_id" value={data.id} />
                             </td>
                             <td style={{borderWidth: 0.5}}>{data.topic}</td>
-                            <td style={{borderWidth: 0.5}}>{data.id}</td>
+                            <td style={{borderWidth: 0.5}}>
+                                {data.id}&nbsp;
+                                <button type="button" class="btn btn-primary" onClick={()=>navigator.clipboard.writeText(data.id)}>
+                                  <i class="bi bi-clipboard"></i>
+                                </button>
+                            </td>
                             <td style={{borderWidth: 0.5}}>
                                 <a href={data.webUrl} target="blank">web URL</a>
                             </td>
