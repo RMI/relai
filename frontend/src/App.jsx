@@ -9,6 +9,7 @@ import { ChatListData } from './components/ChatListData';
 import { ChatMessagesData } from './components/ChatMessagesData';
 import { EmailData } from './components/EmailData';
 import { FileListData } from './components/FileListData';
+import { FilesData } from './components/FilesData';
 import { TeamChannelsListData } from './components/TeamChannelsListData';
 import { APIData } from './components/APIData';
 
@@ -198,16 +199,16 @@ const FileListContent = () => {
 
     return (
         <>
-            <h5 className="api">File List</h5>
+            <h5 className="api">Files</h5>
             {graphData ? (
-                <FileListData graphData={graphData} />
+                <FilesData graphData={graphData} />
             ) : (
                 <form action={RequestData}>
                     <label>
                         File Path: <input name="file_path" />
                     </label>
                     <button variant="secondary" type="submit">
-                        Request File List
+                        Get Files
                     </button>
                 </form>
             )}
