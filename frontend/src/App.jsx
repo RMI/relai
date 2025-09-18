@@ -4,7 +4,7 @@ import { PageLayout } from './components/PageLayout';
 import { loginRequest } from './authConfig';
 import { getGraphResponse, getProfile, getChannelMessageList, getChatList, getChatMessages, getEmail, getTeamList } from './graph';
 import { ProfileData } from './components/ProfileData';
-import { ChannelMessageListData } from './components/ChannelMessageListData';
+import { ChannelMessageData } from './components/ChannelMessageData';
 import { ChatListData } from './components/ChatListData';
 import { ChatMessagesData } from './components/ChatMessagesData';
 import { EmailData } from './components/EmailData';
@@ -160,7 +160,7 @@ const ChannelMessageListContent = () => {
         <>
             <h5 className="api">Channel Message List</h5>
             {graphData ? (
-                <ChannelMessageListData graphData={graphData} />
+                <ChannelMessageData graphData={graphData} />
             ) : (
                 <form action={RequestData}>
                     <label>
@@ -326,8 +326,8 @@ const MainContent = () => {
             <AuthenticatedTemplate>
                 <ProfileContent />
                 <ChatListContent />
-                <FileListContent />
                 <TeamChannelsListContent />
+                <FileListContent />
                 <APIContent />
                 <hr />
                 <EmailContent />
