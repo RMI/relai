@@ -8,7 +8,6 @@ import { ChannelMessageData } from './components/ChannelMessageData';
 import { ChatListData } from './components/ChatListData';
 import { ChatMessagesData } from './components/ChatMessagesData';
 import { EmailData } from './components/EmailData';
-import { FileListData } from './components/FileListData';
 import { FilesData } from './components/FilesData';
 import { TeamChannelsListData } from './components/TeamChannelsListData';
 import { APIData } from './components/APIData';
