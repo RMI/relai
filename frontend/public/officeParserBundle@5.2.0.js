@@ -27459,7 +27459,7 @@ const fs            = require('fs');
 const yauzl         = require('yauzl');
 
 /** Load pdfjs-dist once at module scope. This returns a Promise that resolves to the module. */
-const pdfjsPromise = import('pdfjs-dist/legacy/build/pdf.mjs');
+const pdfjsPromise = import('/pdfjs-dist/legacy/build/pdf.mjs');
 
 /** Header for error messages */
 const ERRORHEADER = "[OfficeParser]: ";
@@ -28045,7 +28045,7 @@ function parseOfficeAsync(srcFile, config = {}) {
 /** Extract specific files from either a ZIP file buffer or file path based on a filter function.
  * @param {Buffer|string}          zipInput ZIP file input, either a Buffer or a file path (string).
  * @param {(x: string) => boolean} filterFn A function that receives the entry object and returns true if the file should be extracted.
- * @returns {Promise<{ path: string, content: string }[]>} Resolves to an array of object 
+ * @returns {Promise<{ path: string, content: string }[]>} Resolves to an array of object
  */
 function extractFiles(zipInput, filterFn) {
     return new Promise((res, rej) => {
@@ -28144,7 +28144,7 @@ if ((typeof process.argv[0] == 'string' && (process.argv[0].split('/').pop() == 
 
     /** Function to identify if an argument is a config option (i.e., --key=value)
      * @param {string} arg Argument passed in the CLI call.
-     */ 
+     */
     function isConfigOption(arg) {
         return arg.startsWith('--') && arg.includes('=');
     }
