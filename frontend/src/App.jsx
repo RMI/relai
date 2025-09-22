@@ -192,7 +192,30 @@ const FilesContent = () => {
                 account: accounts[0],
             })
             .then((response) => {
-                getGraphResponse(response.accessToken, url).then((response) => setGraphData(response));
+                getGraphResponse(response.accessToken, url)
+                    .then((response) => {
+                        const urls = response.value.map(d => d["@microsoft.graph.downloadUrl"]);
+
+                        async function get_content(url, callback) {
+                           const config = {
+                                newlineDelimiter: " ",
+                                ignoreNotes: true
+                            }
+                            const response = await fetch(url);
+                            const arrayBuffer = await response.arrayBuffer();
+                            const result = await officeParser.parseOfficeAsync(arrayBuffer, config);
+                            return(result);
+                        }
+
+                        Promise.all(urls.map(a => get_content(a)))
+                            .then((text) => {
+                                const result = response.value.map((e,i) => ({
+                                    ...e,
+                                    text: text[i]
+                                }));
+                                setGraphData(result);
+                            })
+                    });
             });
     }
 
