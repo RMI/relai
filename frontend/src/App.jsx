@@ -483,10 +483,10 @@ const MainContent = () => {
                 <label>
                     File Path: <input id="file_path" defaultValue="test_folder" />
                 </label>
-                <hr />
-                <ProfileContent />
                 <ChatListContent />
                 <TeamChannelsListContent />
+                <hr />
+                <ProfileContent />
                 <APIContent />
                 <hr />
                 <EmailContent />
