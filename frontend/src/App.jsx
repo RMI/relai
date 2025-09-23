@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import { PageLayout } from './components/PageLayout';
 import { loginRequest } from './authConfig';
 import { getGraphResponse, getProfile, getChannelMessageList, getChatList, getChatMessages, getEmail, getTeamList } from './graph';
+
 import { ProfileData } from './components/ProfileData';
 import { ChannelMessageData } from './components/ChannelMessageData';
 import { ChatListData } from './components/ChatListData';
@@ -11,6 +12,10 @@ import { EmailData } from './components/EmailData';
 import { FilesData } from './components/FilesData';
 import { TeamChannelsListData } from './components/TeamChannelsListData';
 import { APIData } from './components/APIData';
+import { ChatCompletionData } from './components/ChatCompletionData';
+
+import { AzureOpenAI } from 'openai';
+import { systemPrompt, userPrompt } from './components/Prompts';
 
 import { AuthenticatedTemplate, UnauthenticatedTemplate, useMsal } from '@azure/msal-react';
 import './App.css';
@@ -44,6 +49,119 @@ const ProfileContent = () => {
             ) : (
                 <Button variant="secondary" onClick={RequestProfileData}>
                     Request Profile
+                </Button>
+            )}
+        </>
+    );
+};
+
+const ChatCompletion = () => {
+    const { instance, accounts } = useMsal();
+    const [graphData, setGraphData] = useState(null);
+    const [profile, setProfile] = useState(null);
+    const [email, setEmail] = useState(null);
+
+    function RequestChatCompletion() {
+        const endpoint = import.meta.env.VITE_AZURE_FOUNDRY_ENDPOINT;
+        const apiKey = import.meta.env.VITE_AZURE_FOUNDRY_KEY;
+        const apiVersion = import.meta.env.VITE_AZURE_FOUNDRY_API_VERSION;
+        const deployment = import.meta.env.VITE_AZURE_FOUNDRY_MODEL;
+
+        async function main(content) {
+            const client = new AzureOpenAI({
+                endpoint,
+                apiKey,
+                apiVersion,
+                deployment,
+                dangerouslyAllowBrowser: true
+            });
+            const result = await client.chat.completions.create({
+                messages: [
+                    { role: "system", content: systemPrompt },
+                    { role: "user", content: userPrompt },
+                    { role: "user", content: JSON.stringify(content) },
+                ],
+                model: "",
+            });
+
+            return(result.choices[0].message);
+        }
+
+        async function getToken() {
+            instance
+                .acquireTokenSilent({
+                    ...loginRequest,
+                    account: accounts[0],
+                })
+                .then((response) => {
+                    const token = response.accessToken;
+
+                    const file_path = document.getElementById("file_path").value;
+                    const chat_id = document.getElementById("chat_id").value;
+                    const team_id = document.getElementById("team_id").value;
+                    const channel_id = document.getElementById("channel_id").value;
+
+                    const file_list_url = "https://graph.microsoft.com/v1.0/me/drive/root:/" + file_path + ":/children";
+
+                    const email = getEmail(token);
+                    const file_list = getGraphResponse(token, file_list_url);
+                    const chat_msgs = getChatMessages(token, chat_id);
+                    const channel_msgs = getChannelMessageList(token, team_id, channel_id);
+
+                    Promise.all([email, file_list, chat_msgs, channel_msgs])
+                        .then(([email, file_list, chat_msgs, channel_msgs]) => {
+                            const email_result = email.value.map(e => ({
+                                id: e.id,
+                                type: "email",
+                                date_time: e.receivedDateTime,
+                                author: e.from.emailAddress.address,
+                                content: new DOMParser().parseFromString(e.body.content, 'text/html').body.textContent || "",
+                                subject: e.subject
+                            }));
+
+                            const chat_msgs_result = chat_msgs.value.map(e => ({
+                                id: e.id,
+                                type: "chat message",
+                                date_time: e.lastModifiedDateTime,
+                                author: e.from.user.displayName,
+                                content: new DOMParser().parseFromString(e.body.content, 'text/html').body.textContent || "",
+                                subject: e.subject
+                            }));
+
+                            const channel_msgs_result = channel_msgs.value.map(e => ({
+                                id: e.id,
+                                type: "channel message",
+                                date_time: e.lastModifiedDateTime,
+                                author: (e.from !== null) ? e.from.user.displayName : "",
+                                content: new DOMParser().parseFromString(e.body.content, 'text/html').body.textContent || "",
+                                subject: e.subject
+                            }));
+
+                            const content = email_result.concat(chat_msgs_result, channel_msgs_result);
+                            console.log("content is: ", content);
+
+                            main(content)
+                                .then((result) => {
+                                    setGraphData(result);
+                                })
+                                .catch((err) => {
+                                    console.error("The sample encountered an error:", err);
+                                });
+                        })
+                });
+        }
+
+        getToken();
+    }
+
+    return (
+        <>
+            <h5 className="chatCompletion">RELAI Summary</h5>
+            {graphData ? (
+                <ChatCompletionData graphData={graphData} />
+            ) : (
+                <Button variant="secondary" onClick={RequestChatCompletion}>
+                    Request RELAI Summary
                 </Button>
             )}
         </>
@@ -347,6 +465,24 @@ const MainContent = () => {
     return (
         <div className="App">
             <AuthenticatedTemplate>
+                <ChatCompletion />
+                <br />
+                <label>
+                    File Path: <input id="file_path" defaultValue="test_folder" />
+                </label>
+                <br />
+                <label>
+                    Chat ID: <input id="chat_id" defaultValue="19:94911207bd8e4da590b77fb2b85afa20@thread.v2" />
+                </label>
+                <br />
+                <label>
+                    Team ID: <input id="team_id" defaultValue="fc761c82-e3fd-4c75-9171-3760e7f07c67" />
+                </label>
+                <br />
+                <label>
+                    Channel ID: <input id="channel_id" defaultValue="19:8cfpaKEr2j5_-rx8_RVfDUR6MBOV-WPGo7vpVmZ20KE1@thread.tacv2" />
+                </label>
+                <hr />
                 <ProfileContent />
                 <ChatListContent />
                 <TeamChannelsListContent />
