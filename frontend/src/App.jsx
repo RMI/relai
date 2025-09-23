@@ -100,16 +100,27 @@ const ChatCompletion = () => {
                     const token = response.accessToken;
 
                     const file_path = document.getElementById("file_path").value;
-                    const chat_id = document.getElementById("chat_id").value;
-                    const team_id = document.getElementById("team_id").value;
-                    const channel_id = document.getElementById("channel_id").value;
+                    const selected_chats = document.querySelector('input[name="chat_id"]:checked');
+                    const selected_channels = document.querySelector('input[name="teamchannel_id"]:checked');
 
                     const file_list_url = "https://graph.microsoft.com/v1.0/me/drive/root:/" + file_path + ":/children";
 
                     const email = getEmail(token);
+
                     const file_list = getGraphResponse(token, file_list_url);
-                    const chat_msgs = getChatMessages(token, chat_id);
-                    const channel_msgs = getChannelMessageList(token, team_id, channel_id);
+
+                    let chat_msgs = Promise.resolve({value:[]});
+                    if (selected_chats !== null) {
+                        const chat_id = selected_chats.id;
+                        chat_msgs = getChatMessages(token, chat_id);
+                    }
+
+                    let channel_msgs = Promise.resolve({value:[]});
+                    if (selected_channels !== null) {
+                        const team_id = selected_channels.dataset.team_id;
+                        const channel_id = selected_channels.dataset.channel_id;
+                        channel_msgs = getChannelMessageList(token, team_id, channel_id);
+                    }
 
                     Promise.all([email, file_list, chat_msgs, channel_msgs])
                         .then(([email, file_list, chat_msgs, channel_msgs]) => {
@@ -471,18 +482,6 @@ const MainContent = () => {
                 <br />
                 <label>
                     File Path: <input id="file_path" defaultValue="test_folder" />
-                </label>
-                <br />
-                <label>
-                    Chat ID: <input id="chat_id" defaultValue="19:94911207bd8e4da590b77fb2b85afa20@thread.v2" />
-                </label>
-                <br />
-                <label>
-                    Team ID: <input id="team_id" defaultValue="fc761c82-e3fd-4c75-9171-3760e7f07c67" />
-                </label>
-                <br />
-                <label>
-                    Channel ID: <input id="channel_id" defaultValue="19:8cfpaKEr2j5_-rx8_RVfDUR6MBOV-WPGo7vpVmZ20KE1@thread.tacv2" />
                 </label>
                 <hr />
                 <ProfileContent />
