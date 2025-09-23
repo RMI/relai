@@ -141,7 +141,6 @@ const ChatCompletion = () => {
                             }));
 
                             const content = email_result.concat(chat_msgs_result, channel_msgs_result);
-                            console.log("content is: ", content);
 
                             main(content)
                                 .then((result) => {
