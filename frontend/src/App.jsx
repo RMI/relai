@@ -65,6 +65,9 @@ const ChatCompletion = () => {
         const apiVersion = import.meta.env.VITE_AZURE_FOUNDRY_API_VERSION;
         const deployment = import.meta.env.VITE_AZURE_FOUNDRY_MODEL;
 
+        const temperature = 0.2;
+        const max_tokens = 800;
+
         async function main(content) {
             const client = new AzureOpenAI({
                 endpoint,
@@ -80,6 +83,8 @@ const ChatCompletion = () => {
                     { role: "user", content: JSON.stringify(content) },
                 ],
                 model: "",
+                temperature: temperature,
+                max_tokens: max_tokens
             });
 
             return(result.choices[0].message);
