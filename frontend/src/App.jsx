@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 
 import { PageLayout } from './components/PageLayout';
 import { loginRequest } from './authConfig';
-import { getGraphResponse, getProfile, getChannelMessageList, getChatList, getChatMessages, getEmail, getTeamList } from './graph';
+import { getGraphResponse, getProfile, getChannelMessageList, getChatList, getChatMembers, getChatMessages, getEmail, getTeamList } from './graph';
 import { ProfileData } from './components/ProfileData';
 import { ChannelMessageData } from './components/ChannelMessageData';
 import { ChatListData } from './components/ChatListData';
@@ -62,7 +62,22 @@ const ChatListContent = () => {
                 account: accounts[0],
             })
             .then((response) => {
-                getChatList(response.accessToken).then((response) => setGraphData(response));
+                const token = response.accessToken;
+                getChatList(token)
+                    .then((response) => {
+                        const membersPromises = response.value.map((e) => {
+                            return getChatMembers(token, e.id);
+                        });
+
+                        Promise.all(membersPromises)
+                            .then((members) => {
+                                const result = response.value.map((e,i) => ({
+                                    ...e,
+                                    members: members[i]
+                                }));
+                                setGraphData(result);
+                            })
+                    })
             });
     }
 
