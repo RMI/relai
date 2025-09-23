@@ -1,7 +1,7 @@
 import React from "react";
 
 /**
- * Renders information about the user obtained from MS Graph
+ * Renders AI summary of content
  * @param props
  */
 export const ChatCompletionData = (props) => {
