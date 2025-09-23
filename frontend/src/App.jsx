@@ -58,8 +58,6 @@ const ProfileContent = () => {
 const ChatCompletion = () => {
     const { instance, accounts } = useMsal();
     const [graphData, setGraphData] = useState(null);
-    const [profile, setProfile] = useState(null);
-    const [email, setEmail] = useState(null);
 
     function RequestChatCompletion() {
         const endpoint = import.meta.env.VITE_AZURE_FOUNDRY_ENDPOINT;
