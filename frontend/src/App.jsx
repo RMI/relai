@@ -158,36 +158,36 @@ const ChannelMessageListContent = () => {
     const [graphData, setGraphData] = useState(null);
 
     function RequestData(formData) {
-        // Silently acquires an access token which is then attached to a request for MS Graph data
-        const team_id = formData.get("team_id");
-        const channel_id = formData.get("channel_id");
-        instance
-            .acquireTokenSilent({
-                ...loginRequest,
-                account: accounts[0],
-            })
-            .then((response) => {
-                getChannelMessageList(response.accessToken, team_id, channel_id).then((response) => setGraphData(response));
-            });
+        const selected_channels = document.querySelector('input[name="teamchannel_id"]:checked');
+
+        if (selected_channels === null) {
+            setGraphData(null);
+        } else {
+            const team_id = selected_channels.dataset.team_id;
+            const channel_id = selected_channels.dataset.channel_id;
+
+            instance
+                .acquireTokenSilent({
+                    ...loginRequest,
+                    account: accounts[0],
+                })
+                .then((response) => {
+                    getChannelMessageList(response.accessToken, team_id, channel_id)
+                        .then((response) => setGraphData(response));
+                });
+        }
     }
 
     return (
         <>
-            <h5 className="api">Channel Message List</h5>
+            <h5 className="api">Channel Messages</h5>
+            <Button variant="secondary" onClick={RequestData}>
+                Get Channel Messages
+            </Button>
             {graphData ? (
                 <ChannelMessageData graphData={graphData} />
             ) : (
-                <form action={RequestData}>
-                    <label>
-                        Team ID: <input name="team_id" />
-                    </label>
-                    <label>
-                        Channel ID: <input name="channel_id" />
-                    </label>
-                    <button variant="secondary" type="submit">
-                        Request Channel Message List
-                    </button>
-                </form>
+                <br/>
             )}
         </>
     );
