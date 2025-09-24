@@ -1,4 +1,5 @@
 import React from "react";
+import Table from 'react-bootstrap/Table';
 
 /**
  * Renders information about the user obtained from MS Graph
@@ -9,30 +10,30 @@ export const TeamChannelsListData = (props) => {
 
     return (
         <div id="chatslist-div">
-            <table>
+            <Table striped bordered hover size="sm">
                 <thead><tr>
-                    <td style={{borderWidth: 0.5}}>select</td>
-                    <td style={{borderWidth: 0.5}}>Channel Name</td>
-                    <td style={{borderWidth: 0.5}}>Team</td>
-                    <td style={{borderWidth: 0.5}}>Team Description</td>
-                    <td style={{borderWidth: 0.5}}>Web URL</td>
+                    <th>select</th>
+                    <th>Channel Name</th>
+                    <th>Team</th>
+                    <th>Team Description</th>
+                    <th>link</th>
                 </tr></thead>
                 <tbody>
                     {data.map((data, index) => (
                         <tr key={index}>
-                            <td style={{borderWidth: 0.5}}>
-                                <input type="radio" name="teamchannel_id" data-team_id={data.team_id} data-channel_id={data.id} />
+                            <td>
+                                <input type="radio" id={data.id} name="teamchannel_id" value={data.id} />
                             </td>
-                            <td style={{borderWidth: 0.5}}>{data.displayName}</td>
-                            <td style={{borderWidth: 0.5}}>{data.team_name}</td>
-                            <td style={{borderWidth: 0.5}}>{data.team_desc}</td>
-                            <td style={{borderWidth: 0.5}}>
-                                <a href={data.webUrl} target="blank">web URL</a>
+                            <td>{data[0].displayName}</td>
+                            <td>{data[0].team_name}</td>
+                            <td>{data[0].team_desc}</td>
+                            <td>
+                                <a href={data[0].webUrl} target="blank">link</a>
                             </td>
                         </tr>
                     ))}
                 </tbody>
-            </table>
+            </Table>
         </div>
     );
 };
