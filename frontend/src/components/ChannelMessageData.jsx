@@ -11,8 +11,8 @@ export const ChannelMessageData = (props) => {
         type: "channel message",
         date_time: e.lastModifiedDateTime,
         author: (e.from !== null) ? e.from.user.displayName : "",
-        content: new DOMParser().parseFromString(e.body.content, 'text/html').body.textContent || "",
-        subject: e.subject
+        content: new DOMParser().parseFromString(e.body.content || "", 'text/html').body.textContent,
+        subject: e.subject || ""
     }));
     return (
         <div id="api-div">
