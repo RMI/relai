@@ -24,11 +24,11 @@ export const TeamChannelsListData = (props) => {
                             <td>
                                 <input type="radio" id={data.id} name="teamchannel_id" value={data.id} />
                             </td>
-                            <td>{data[0].displayName}</td>
-                            <td>{data[0].team_name}</td>
-                            <td>{data[0].team_desc}</td>
+                            <td>{data.displayName}</td>
+                            <td>{data.team_name}</td>
+                            <td>{data.team_desc}</td>
                             <td>
-                                <a href={data[0].webUrl} target="blank">link</a>
+                                <a href={data.webUrl} target="blank">link</a>
                             </td>
                         </tr>
                     ))}
