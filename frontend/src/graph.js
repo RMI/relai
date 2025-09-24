@@ -38,6 +38,12 @@ export async function getChatList(accessToken) {
     return getGraphResponse(accessToken, "https://graph.microsoft.com/v1.0/me/chats")
 }
 
+export async function getChatMembers(accessToken, chat_id) {
+    return getGraphResponse(accessToken, "https://graph.microsoft.com/v1.0/me/chats/" + chat_id + "/members")
+        .then(response => response.value.map((e) => e.displayName))
+        .catch(error => console.log(error));
+}
+
 export async function getChatMessages(accessToken, chat_id) {
     return getGraphResponse(accessToken, "https://graph.microsoft.com/v1.0/me/chats/" + chat_id + "/messages")
 }
