@@ -258,17 +258,18 @@ const APIContent = () => {
     return (
         <>
             <h5 className="api">API</h5>
+            <form action={RequestData}>
+                <label>
+                    API URL: <input name="api_url" />
+                </label>
+                <button variant="secondary" type="submit">
+                    Request API call
+                </button>
+            </form>
             {graphData ? (
                 <APIData graphData={graphData} />
             ) : (
-                <form action={RequestData}>
-                    <label>
-                        API URL: <input name="api_url" />
-                    </label>
-                    <button variant="secondary" type="submit">
-                        Request API call
-                    </button>
-                </form>
+                <br />
             )}
         </>
     );
