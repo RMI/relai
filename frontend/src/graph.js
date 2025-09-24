@@ -1,7 +1,5 @@
-/**
- * Attaches a given access token to a MS Graph API call. Returns information about the user
- * @param accessToken
- */
+export const daysBefore_global = 14;
+
 export async function getGraphResponse(accessToken, url) {
     const headers = new Headers();
     const bearer = `Bearer ${accessToken}`;
@@ -22,7 +20,7 @@ export async function getProfile(accessToken) {
     return getGraphResponse(accessToken, "https://graph.microsoft.com/v1.0/me")
 }
 
-export async function getEmail(accessToken) {
+export async function getEmail(accessToken, daysBefore = daysBefore_global) {
     return getGraphResponse(accessToken, "https://graph.microsoft.com/v1.0/me/messages?$filter=receivedDateTime gt " + getStartFromDateStr(daysBefore))
 }
 
@@ -30,7 +28,7 @@ export async function getChannelList(accessToken, team_id) {
     return getGraphResponse(accessToken, "https://graph.microsoft.com/v1.0/teams/" + team_id + "/channels")
 }
 
-export async function getChannelMessageList(accessToken, team_id, channel_id) {
+export async function getChannelMessageList(accessToken, team_id, channel_id, daysBefore = daysBefore_global) {
     return getGraphResponse(accessToken, "https://graph.microsoft.com/v1.0/teams/" + team_id + "/channels/" + channel_id + "/messages/delta?$filter=lastModifiedDateTime gt " + getStartFromDateStr(daysBefore) + "T00:00:00.000Z")
     // must filter from append delta endpoint
     // must filter by lastModifiedDateTime, not createdDateTime
@@ -49,7 +47,7 @@ export async function getChatMembers(accessToken, chat_id) {
         .catch(error => console.log(error));
 }
 
-export async function getChatMessages(accessToken, chat_id) {
+export async function getChatMessages(accessToken, chat_id, daysBefore = daysBefore_global) {
     return getGraphResponse(accessToken, "https://graph.microsoft.com/v1.0/me/chats/" + chat_id + "/messages?$filter=lastModifiedDateTime gt " + getStartFromDateStr(daysBefore) + "T00:00:00.000Z")
     // must filter by lastModifiedDateTime, not createdDateTime
     // must filter with gt, not ge
@@ -64,7 +62,7 @@ export async function getTeamList(accessToken) {
     return getGraphResponse(accessToken, "https://graph.microsoft.com/v1.0/teams")
 }
 
-export function getStartFromDateStr(daysBefore) {
+export function getStartFromDateStr(daysBefore = daysBefore_global) {
     var incrementDate = function (date, amount) {
         var tmpDate = new Date(date);
         tmpDate.setDate(tmpDate.getDate() + amount)
@@ -79,5 +77,3 @@ export function getStartFromDateStr(daysBefore) {
 
     return startFromDateStr;
 }
-
-export const daysBefore = 14;

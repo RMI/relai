@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import { PageLayout } from './components/PageLayout';
 import { loginRequest } from './authConfig';
 
-import { getGraphResponse, getProfile, getChannelMessageList, getChatList, getChatMembers, getChatMessages, getEmail, getTeamList, getStartFromDateStr, daysBefore } from './graph';
+import { getGraphResponse, getProfile, getChannelMessageList, getChatList, getChatMembers, getChatMessages, getEmail, getTeamList, getStartFromDateStr, daysBefore_global } from './graph';
 import { ProfileData } from './components/ProfileData';
 import { ChannelMessageData } from './components/ChannelMessageData';
 import { ChatListData } from './components/ChatListData';
@@ -111,7 +111,7 @@ const ChatCompletion = () => {
                     const file_content = getGraphResponse(token, file_list_url)
                         .then((response) => {
                             const dir_list = response.value
-                                .filter(e => e.lastModifiedDateTime > getStartFromDateStr(daysBefore));
+                                .filter(e => e.lastModifiedDateTime > getStartFromDateStr(daysBefore_global));
                             const file_list = dir_list.filter(e => !e.folder);
                             const subfolder_list = dir_list.filter(e => e.folder);
 
@@ -379,7 +379,7 @@ const FilesContent = () => {
                 getGraphResponse(response.accessToken, url)
                     .then((response) => {
                         const dir_list = response.value
-                            .filter(e => e.lastModifiedDateTime > getStartFromDateStr(daysBefore));
+                            .filter(e => e.lastModifiedDateTime > getStartFromDateStr(daysBefore_global));
                         const file_list = dir_list.filter(e => !e.folder);
                         const subfolder_list = dir_list.filter(e => e.folder);
 
