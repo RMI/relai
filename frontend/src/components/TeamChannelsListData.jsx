@@ -22,7 +22,7 @@ export const TeamChannelsListData = (props) => {
                     {data.map((data, index) => (
                         <tr key={index}>
                             <td>
-                                <input type="radio" id={data.id} name="teamchannel_id" value={data.id} />
+                                <input type="radio" id={data.id} name="teamchannel_id" data-channel_id={data.id} data-team_id={data.id} />
                             </td>
                             <td>{data.displayName}</td>
                             <td>{data.team_name}</td>
