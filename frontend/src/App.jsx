@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import { PageLayout } from './components/PageLayout';
 import { loginRequest } from './authConfig';
 
-import { getGraphResponse, getProfile, getChannelMessageList, getChatList, getChatMembers, getChatMessages, getEmail, getTeamList } from './graph';
+import { getGraphResponse, getProfile, getChannelMessageList, getChatList, getChatMembers, getChatMessages, getEmail, getTeamList, getStartFromDateStr, daysBefore_global } from './graph';
 import { ProfileData } from './components/ProfileData';
 import { ChannelMessageData } from './components/ChannelMessageData';
 import { ChatListData } from './components/ChatListData';
@@ -109,8 +109,13 @@ const ChatCompletion = () => {
                     const email = getEmail(token);
 
                     const file_content = getGraphResponse(token, file_list_url)
-                        .then((file_list) => {
-                            const urls = file_list.value.map(d => d["@microsoft.graph.downloadUrl"]);
+                        .then((response) => {
+                            const dir_list = response.value
+                                .filter(e => e.lastModifiedDateTime > getStartFromDateStr(daysBefore_global));
+                            const file_list = dir_list.filter(e => !e.folder);
+                            const subfolder_list = dir_list.filter(e => e.folder);
+
+                            const urls = file_list.map(d => d["@microsoft.graph.downloadUrl"]);
 
                             async function get_content(url, callback) {
                                const config = {
@@ -125,7 +130,7 @@ const ChatCompletion = () => {
 
                             return Promise.all(urls.map(a => get_content(a)))
                                 .then((text) => {
-                                    const result = file_list.value.map((e,i) => ({
+                                    const result = file_list.map((e,i) => ({
                                         ...e,
                                         text: text[i]
                                     }));
@@ -373,7 +378,12 @@ const FilesContent = () => {
             .then((response) => {
                 getGraphResponse(response.accessToken, url)
                     .then((response) => {
-                        const urls = response.value.map(d => d["@microsoft.graph.downloadUrl"]);
+                        const dir_list = response.value
+                            .filter(e => e.lastModifiedDateTime > getStartFromDateStr(daysBefore_global));
+                        const file_list = dir_list.filter(e => !e.folder);
+                        const subfolder_list = dir_list.filter(e => e.folder);
+
+                        const urls = file_list.map(d => d["@microsoft.graph.downloadUrl"]);
 
                         async function get_content(url, callback) {
                            const config = {
@@ -388,7 +398,7 @@ const FilesContent = () => {
 
                         Promise.all(urls.map(a => get_content(a)))
                             .then((text) => {
-                                const result = response.value.map((e,i) => ({
+                                const result = file_list.map((e,i) => ({
                                     ...e,
                                     text: text[i]
                                 }));
