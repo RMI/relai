@@ -1,50 +1,39 @@
 import React from "react";
+import Table from 'react-bootstrap/Table';
 
 /**
  * Renders information about the user obtained from MS Graph
  * @param props
  */
 export const TeamChannelsListData = (props) => {
+    const data = props.graphData.flat().filter(n => n);
+
     return (
         <div id="chatslist-div">
-            <table>
+            <Table striped bordered hover size="sm">
                 <thead><tr>
-                    <td style={{borderWidth: 0.5}}>select</td>
-                    <td style={{borderWidth: 0.5}}>Channel Name</td>
-                    <td style={{borderWidth: 0.5}}>Channel ID</td>
-                    <td style={{borderWidth: 0.5}}>Team</td>
-                    <td style={{borderWidth: 0.5}}>Team Description</td>
-                    <td style={{borderWidth: 0.5}}>Team ID</td>
-                    <td style={{borderWidth: 0.5}}>Web URL</td>
+                    <th>select</th>
+                    <th>Channel Name</th>
+                    <th>Team</th>
+                    <th>Team Description</th>
+                    <th>link</th>
                 </tr></thead>
                 <tbody>
-                    {props.graphData.filter(n => n).map((data, index) => (
+                    {data.map((data, index) => (
                         <tr key={index}>
-                            <td style={{borderWidth: 0.5}}>
+                            <td>
                                 <input type="radio" id={data.id} name="teamchannel_id" value={data.id} />
                             </td>
-                            <td style={{borderWidth: 0.5}}>{data[0].displayName}</td>
-                            <td style={{borderWidth: 0.5}}>
-                                {data[0].id}&nbsp;
-                                <button type="button" class="btn btn-primary" onClick={()=>navigator.clipboard.writeText(data[0].id)}>
-                                  <i class="bi bi-clipboard"></i>
-                                </button>
-                            </td>
-                            <td style={{borderWidth: 0.5}}>{data[0].team_name}</td>
-                            <td style={{borderWidth: 0.5}}>{data[0].team_desc}</td>
-                            <td style={{borderWidth: 0.5}}>
-                                {data[0].team_id}&nbsp;
-                                <button type="button" class="btn btn-primary" onClick={()=>navigator.clipboard.writeText(data[0].team_id)}>
-                                  <i class="bi bi-clipboard"></i>
-                                </button>
-                            </td>
-                            <td style={{borderWidth: 0.5}}>
-                                <a href={data[0].webUrl} target="blank">web URL</a>
+                            <td>{data[0].displayName}</td>
+                            <td>{data[0].team_name}</td>
+                            <td>{data[0].team_desc}</td>
+                            <td>
+                                <a href={data[0].webUrl} target="blank">link</a>
                             </td>
                         </tr>
                     ))}
                 </tbody>
-            </table>
+            </Table>
         </div>
     );
 };
