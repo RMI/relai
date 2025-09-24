@@ -151,36 +151,36 @@ const ChatCompletion = () => {
                                 id: e.id,
                                 type: "email",
                                 date_time: e.receivedDateTime,
-                                author: e.from.emailAddress.address,
-                                content: new DOMParser().parseFromString(e.body.content, 'text/html').body.textContent || "",
-                                subject: e.subject
+                                author: e.from?.emailAddress?.address || "",
+                                content: new DOMParser().parseFromString(e.body.content || "", 'text/html').body.textContent,
+                                subject: e.subject || ""
                             }));
 
                             const file_content_result = file_content.map(e => ({
                                 id: e.id,
                                 type: "onedrive file",
                                 date_time: e.lastModifiedDateTime,
-                                author: e.lastModifiedBy.user.displayName,
-                                content: e.text,
-                                subject: e.name
+                                author: e.lastModifiedBy?.user?.displayName || "",
+                                content: e.text || "",
+                                subject: e.name || ""
                             }));
 
                             const chat_msgs_result = chat_msgs.value.map(e => ({
                                 id: e.id,
                                 type: "chat message",
                                 date_time: e.lastModifiedDateTime,
-                                author: e.from.user.displayName,
-                                content: new DOMParser().parseFromString(e.body.content, 'text/html').body.textContent || "",
-                                subject: e.subject
+                                author: e.from?.user?.displayName || "",
+                                content: new DOMParser().parseFromString(e.body.content || "", 'text/html').body.textContent,
+                                subject: e.subject || ""
                             }));
 
                             const channel_msgs_result = channel_msgs.value.map(e => ({
                                 id: e.id,
                                 type: "channel message",
                                 date_time: e.lastModifiedDateTime,
-                                author: (e.from !== null) ? e.from.user.displayName : "",
-                                content: new DOMParser().parseFromString(e.body.content, 'text/html').body.textContent || "",
-                                subject: e.subject
+                                author: e.from?.user?.displayName || "",
+                                content: new DOMParser().parseFromString(e.body.content || "", 'text/html').body.textContent,
+                                subject: e.subject || ""
                             }));
 
                             const content = email_result.concat(file_content_result, chat_msgs_result, channel_msgs_result);
