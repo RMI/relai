@@ -10,9 +10,9 @@ export const ChatMessagesData = (props) => {
         id: e.id,
         type: "chat message",
         date_time: e.lastModifiedDateTime,
-        author: e.from.user.displayName,
+        author: e.from?.user?.displayName || "",
         content: new DOMParser().parseFromString(e.body.content, 'text/html').body.textContent || "",
-        subject: e.subject
+        subject: e.subject || ""
     }));
     return (
         <div id="api-div">
