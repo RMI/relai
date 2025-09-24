@@ -23,7 +23,7 @@ export async function getProfile(accessToken) {
 }
 
 export async function getEmail(accessToken) {
-    return getGraphResponse(accessToken, "https://graph.microsoft.com/v1.0/me/messages")
+    return getGraphResponse(accessToken, "https://graph.microsoft.com/v1.0/me/messages?$filter=receivedDateTime gt " + getStartFromDateStr(daysBefore))
 }
 
 export async function getChannelList(accessToken, team_id) {
@@ -31,7 +31,12 @@ export async function getChannelList(accessToken, team_id) {
 }
 
 export async function getChannelMessageList(accessToken, team_id, channel_id) {
-    return getGraphResponse(accessToken, "https://graph.microsoft.com/v1.0/teams/" + team_id + "/channels/" + channel_id + "/messages")
+    return getGraphResponse(accessToken, "https://graph.microsoft.com/v1.0/teams/" + team_id + "/channels/" + channel_id + "/messages/delta?$filter=lastModifiedDateTime gt " + getStartFromDateStr(daysBefore) + "T00:00:00.000Z")
+    // must filter from append delta endpoint
+    // must filter by lastModifiedDateTime, not createdDateTime
+    // must filter with gt, not ge
+    // time format must be like 2025-08-10T00:00:00.000Z
+    // get replies too: ?&$expand=replies
 }
 
 export async function getChatList(accessToken) {
@@ -45,7 +50,10 @@ export async function getChatMembers(accessToken, chat_id) {
 }
 
 export async function getChatMessages(accessToken, chat_id) {
-    return getGraphResponse(accessToken, "https://graph.microsoft.com/v1.0/me/chats/" + chat_id + "/messages")
+    return getGraphResponse(accessToken, "https://graph.microsoft.com/v1.0/me/chats/" + chat_id + "/messages?$filter=lastModifiedDateTime gt " + getStartFromDateStr(daysBefore) + "T00:00:00.000Z")
+    // must filter by lastModifiedDateTime, not createdDateTime
+    // must filter with gt, not ge
+    // time format must be like 2025-08-10T00:00:00.000Z
 }
 
 export async function getFileList(accessToken) {
@@ -55,3 +63,21 @@ export async function getFileList(accessToken) {
 export async function getTeamList(accessToken) {
     return getGraphResponse(accessToken, "https://graph.microsoft.com/v1.0/teams")
 }
+
+export function getStartFromDateStr(daysBefore) {
+    var incrementDate = function (date, amount) {
+        var tmpDate = new Date(date);
+        tmpDate.setDate(tmpDate.getDate() + amount)
+        return tmpDate;
+    };
+
+    let padToTwo = number => number <= 99 ? `0${number}`.slice(-2) : number;
+
+    var currentDate = new Date();
+    var startFromDate = incrementDate(currentDate, -daysBefore);
+    var startFromDateStr = startFromDate.getFullYear() + "-" + padToTwo(startFromDate.getMonth()+1) + "-" + startFromDate.getDate();
+
+    return startFromDateStr;
+}
+
+export const daysBefore = 14;
