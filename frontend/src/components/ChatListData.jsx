@@ -12,24 +12,19 @@ export const ChatListData = (props) => {
                 <thead><tr>
                     <th>select</th>
                     <th>Topic</th>
-                    <th>ID</th>
-                    <th>Web URL</th>
+                    <th>Members</th>
+                    <th>link</th>
                 </tr></thead>
                 <tbody>
-                    {props.graphData.value.map((data, index) => (
+                    {props.graphData.map((data, index) => (
                         <tr key={index}>
                             <td>
                                 <input type="radio" id={data.id} name="chat_id" value={data.id} />
                             </td>
                             <td>{data.topic}</td>
+                            <td>{data.members.join(", ")}</td>
                             <td>
-                                {data.id}&nbsp;
-                                <button type="button" class="btn btn-primary" onClick={()=>navigator.clipboard.writeText(data.id)}>
-                                  <i class="bi bi-clipboard"></i>
-                                </button>
-                            </td>
-                            <td>
-                                <a href={data.webUrl} target="blank">web URL</a>
+                                <a href={data.webUrl} target="blank">link</a>
                             </td>
                         </tr>
                     ))}
