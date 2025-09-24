@@ -20,6 +20,7 @@ import { systemPrompt, userPrompt } from './components/Prompts';
 import { AuthenticatedTemplate, UnauthenticatedTemplate, useMsal } from '@azure/msal-react';
 import './App.css';
 import Button from 'react-bootstrap/Button';
+import Collapse from 'react-bootstrap/Collapse';
 
 /**
  * Renders information about the signed-in user or a button to retrieve data about the user
@@ -525,6 +526,8 @@ const ChatMessagesContent = () => {
  * If a user is authenticated the ProfileContent component above is rendered. Otherwise a message indicating a user is not authenticated is rendered.
  */
 const MainContent = () => {
+    const [open, setOpen] = useState(false);
+
     return (
         <div className="App">
             <AuthenticatedTemplate>
@@ -536,13 +539,19 @@ const MainContent = () => {
                 <ChatListContent />
                 <TeamChannelsListContent />
                 <hr />
-                <ProfileContent />
-                <APIContent />
-                <hr />
-                <EmailContent />
-                <ChatMessagesContent />
-                <ChannelMessageListContent />
-                <FilesContent />
+                <Button variant="secondary" onClick={() => setOpen(!open)} aria-controls="utilities-collapse-text" aria-expanded={open}>
+                    toggle utilities
+                </Button>
+                <Collapse in={open}>
+                    <div id="utilities-collapse-text">
+                        <ProfileContent />
+                        <APIContent />
+                        <EmailContent />
+                        <ChatMessagesContent />
+                        <ChannelMessageListContent />
+                        <FilesContent />
+                    </div>
+                </Collapse>
             </AuthenticatedTemplate>
 
             <UnauthenticatedTemplate>
