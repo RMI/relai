@@ -107,7 +107,30 @@ const ChatCompletion = () => {
 
                     const email = getEmail(token);
 
-                    const file_list = getGraphResponse(token, file_list_url);
+                    const file_content = getGraphResponse(token, file_list_url)
+                        .then((file_list) => {
+                            const urls = file_list.value.map(d => d["@microsoft.graph.downloadUrl"]);
+
+                            async function get_content(url, callback) {
+                               const config = {
+                                    newlineDelimiter: " ",
+                                    ignoreNotes: true
+                                }
+                                const response = await fetch(url);
+                                const arrayBuffer = await response.arrayBuffer();
+                                const result = await officeParser.parseOfficeAsync(arrayBuffer, config);
+                                return(result);
+                            }
+
+                            return Promise.all(urls.map(a => get_content(a)))
+                                .then((text) => {
+                                    const result = file_list.value.map((e,i) => ({
+                                        ...e,
+                                        text: text[i]
+                                    }));
+                                    return(result);
+                                })
+                        });
 
                     let chat_msgs = Promise.resolve({value:[]});
                     if (selected_chats !== null) {
@@ -122,8 +145,8 @@ const ChatCompletion = () => {
                         channel_msgs = getChannelMessageList(token, team_id, channel_id);
                     }
 
-                    Promise.all([email, file_list, chat_msgs, channel_msgs])
-                        .then(([email, file_list, chat_msgs, channel_msgs]) => {
+                    Promise.all([email, file_content, chat_msgs, channel_msgs])
+                        .then(([email, file_content, chat_msgs, channel_msgs]) => {
                             const email_result = email.value.map(e => ({
                                 id: e.id,
                                 type: "email",
@@ -131,6 +154,15 @@ const ChatCompletion = () => {
                                 author: e.from.emailAddress.address,
                                 content: new DOMParser().parseFromString(e.body.content, 'text/html').body.textContent || "",
                                 subject: e.subject
+                            }));
+
+                            const file_content_result = file_content.map(e => ({
+                                id: e.id,
+                                type: "onedrive file",
+                                date_time: e.lastModifiedDateTime,
+                                author: e.lastModifiedBy.user.displayName,
+                                content: e.text,
+                                subject: e.name
                             }));
 
                             const chat_msgs_result = chat_msgs.value.map(e => ({
@@ -151,7 +183,7 @@ const ChatCompletion = () => {
                                 subject: e.subject
                             }));
 
-                            const content = email_result.concat(chat_msgs_result, channel_msgs_result);
+                            const content = email_result.concat(file_content_result, chat_msgs_result, channel_msgs_result);
 
                             main(content)
                                 .then((result) => {
