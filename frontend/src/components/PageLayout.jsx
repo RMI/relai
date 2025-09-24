@@ -29,7 +29,7 @@ export const PageLayout = (props) => {
             </Navbar>
                 <div className="title">
                     <h5>
-                        Welcome to the Microsoft Authentication Library For JavaScript - React SPA
+                        Welcome to RELAI Project Status Summarization
                     </h5>
                 </div>
                 <div className="profileContent">
