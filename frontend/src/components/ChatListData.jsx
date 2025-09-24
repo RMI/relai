@@ -1,4 +1,5 @@
 import React from "react";
+import Table from 'react-bootstrap/Table';
 
 /**
  * Renders information about the user obtained from MS Graph
@@ -7,33 +8,33 @@ import React from "react";
 export const ChatListData = (props) => {
     return (
         <div id="chatslist-div">
-            <table>
+            <Table striped bordered hover size="sm">
                 <thead><tr>
-                    <td style={{borderWidth: 0.5}}>select</td>
-                    <td style={{borderWidth: 0.5}}>Topic</td>
-                    <td style={{borderWidth: 0.5}}>ID</td>
-                    <td style={{borderWidth: 0.5}}>Web URL</td>
+                    <th>select</th>
+                    <th>Topic</th>
+                    <th>ID</th>
+                    <th>Web URL</th>
                 </tr></thead>
                 <tbody>
                     {props.graphData.value.map((data, index) => (
                         <tr key={index}>
-                            <td style={{borderWidth: 0.5}}>
+                            <td>
                                 <input type="radio" id={data.id} name="chat_id" value={data.id} />
                             </td>
-                            <td style={{borderWidth: 0.5}}>{data.topic}</td>
-                            <td style={{borderWidth: 0.5}}>
+                            <td>{data.topic}</td>
+                            <td>
                                 {data.id}&nbsp;
                                 <button type="button" class="btn btn-primary" onClick={()=>navigator.clipboard.writeText(data.id)}>
                                   <i class="bi bi-clipboard"></i>
                                 </button>
                             </td>
-                            <td style={{borderWidth: 0.5}}>
+                            <td>
                                 <a href={data.webUrl} target="blank">web URL</a>
                             </td>
                         </tr>
                     ))}
                 </tbody>
-            </table>
+            </Table>
         </div>
     );
 };
