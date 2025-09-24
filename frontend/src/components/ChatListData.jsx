@@ -12,7 +12,6 @@ export const ChatListData = (props) => {
                     <td style={{borderWidth: 0.5}}>select</td>
                     <td style={{borderWidth: 0.5}}>Topic</td>
                     <td style={{borderWidth: 0.5}}>Members</td>
-                    <td style={{borderWidth: 0.5}}>ID</td>
                     <td style={{borderWidth: 0.5}}>Web URL</td>
                 </tr></thead>
                 <tbody>
@@ -23,12 +22,6 @@ export const ChatListData = (props) => {
                             </td>
                             <td style={{borderWidth: 0.5}}>{data.topic}</td>
                             <td style={{borderWidth: 0.5}}>{data.members.join(", ")}</td>
-                            <td style={{borderWidth: 0.5}}>
-                                {data.id}&nbsp;
-                                <button type="button" class="btn btn-primary" onClick={()=>navigator.clipboard.writeText(data.id)}>
-                                  <i class="bi bi-clipboard"></i>
-                                </button>
-                            </td>
                             <td style={{borderWidth: 0.5}}>
                                 <a href={data.webUrl} target="blank">web URL</a>
                             </td>
