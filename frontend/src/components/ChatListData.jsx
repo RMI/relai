@@ -23,8 +23,8 @@ export const ChatListData = (props) => {
                             <td style={{borderWidth: 0.5}}>{data.topic}</td>
                             <td style={{borderWidth: 0.5}}>
                                 {data.id}&nbsp;
-                                <button type="button" class="btn btn-primary" onClick={()=>navigator.clipboard.writeText(data.id)}>
-                                  <i class="bi bi-clipboard"></i>
+                                <button type="button" className="btn btn-primary" onClick={()=>navigator.clipboard.writeText(data.id)}>
+                                  <i className="bi bi-clipboard"></i>
                                 </button>
                             </td>
                             <td style={{borderWidth: 0.5}}>
