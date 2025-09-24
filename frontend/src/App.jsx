@@ -2,8 +2,8 @@ import React, { useState } from 'react';
 
 import { PageLayout } from './components/PageLayout';
 import { loginRequest } from './authConfig';
-import { getGraphResponse, getProfile, getChannelMessageList, getChatList, getChatMessages, getEmail, getTeamList } from './graph';
 
+import { getGraphResponse, getProfile, getChannelMessageList, getChatList, getChatMembers, getChatMessages, getEmail, getTeamList } from './graph';
 import { ProfileData } from './components/ProfileData';
 import { ChannelMessageData } from './components/ChannelMessageData';
 import { ChatListData } from './components/ChatListData';
@@ -225,7 +225,22 @@ const ChatListContent = () => {
                 account: accounts[0],
             })
             .then((response) => {
-                getChatList(response.accessToken).then((response) => setGraphData(response));
+                const token = response.accessToken;
+                getChatList(token)
+                    .then((response) => {
+                        const membersPromises = response.value.map((e) => {
+                            return getChatMembers(token, e.id);
+                        });
+
+                        Promise.all(membersPromises)
+                            .then((members) => {
+                                const result = response.value.map((e,i) => ({
+                                    ...e,
+                                    members: members[i]
+                                }));
+                                setGraphData(result);
+                            })
+                    })
             });
     }
 
@@ -421,17 +436,18 @@ const APIContent = () => {
     return (
         <>
             <h5 className="api">API</h5>
+            <form action={RequestData}>
+                <label>
+                    API URL: <input name="api_url" />
+                </label>
+                <button variant="secondary" type="submit">
+                    Request API call
+                </button>
+            </form>
             {graphData ? (
                 <APIData graphData={graphData} />
             ) : (
-                <form action={RequestData}>
-                    <label>
-                        API URL: <input name="api_url" />
-                    </label>
-                    <button variant="secondary" type="submit">
-                        Request API call
-                    </button>
-                </form>
+                <br />
             )}
         </>
     );
@@ -472,32 +488,34 @@ const ChatMessagesContent = () => {
     const [graphData, setGraphData] = useState(null);
 
     function RequestData(formData) {
-        // Silently acquires an access token which is then attached to a request for MS Graph data
-        const chat_id = formData.get("chat_id");
-        instance
-            .acquireTokenSilent({
-                ...loginRequest,
-                account: accounts[0],
-            })
-            .then((response) => {
-                getChatMessages(response.accessToken, chat_id).then((response) => setGraphData(response));
-            });
+        const selected_chats = document.querySelector('input[name="chat_id"]:checked');
+
+        if (selected_chats === null) {
+            setGraphData(null);
+        } else {
+            const chat_id = selected_chats.id;
+
+            instance
+                .acquireTokenSilent({
+                    ...loginRequest,
+                    account: accounts[0],
+                })
+                .then((response) => {
+                    getChatMessages(response.accessToken, chat_id).then((response) => setGraphData(response));
+                });
+        }
     }
 
     return (
         <>
             <h5 className="email">Chat Messages</h5>
+            <Button variant="secondary" onClick={RequestData}>
+                Get Chat Messages
+            </Button>
             {graphData ? (
                 <ChatMessagesData graphData={graphData} />
             ) : (
-                <form action={RequestData}>
-                    <label>
-                        Chat ID: <input name="chat_id" />
-                    </label>
-                    <button variant="secondary" type="submit">
-                        Get Chat Messages
-                    </button>
-                </form>
+                <br/>
             )}
         </>
     );
