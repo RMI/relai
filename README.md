@@ -1,13 +1,40 @@
-# relai-infra-bootstrap
+# Relai single-page app (SPA)
 
-This is a skeleton project of stubs that represent the overall expected Relai infrastructure (on Azure). 
+This minimal React application demonstrates usage of the Microsoft Authentication Library for React (MSAL React) to:
 
-## frontend
+- Sign in Microsoft Entra users (authentication)
+- Trigger a Relai
+- Sign out users
 
-Contains a simple React JS SPA that can be deployed to Azure Static Web Apps. The goal of this is to Authorize the user on MS GraphAPI. 
+This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
-The frontend depends on specific environment variables existing at `frontend/.env`. The [example file](frontend/.env.example) `frontend/.env.example` contains examples of the necessary environment variables that `frontend/.env` should contain. 
+## Setup
 
-## backend
+Create a `.env` file by copying the `.env.example` and entering the following information:
+```
+REACT_APP_CLIENT_ID={CLIENT_ID}
+REACT_APP_AUTHORITY=https://login.microsoftonline.com/{TENANT_ID}
+REACT_APP_REDIRECT_URI=http://localhost:3000
+```
 
-Contains a simple Docker image that can be deployed and triggered as an Azure Container App Job. The Docker container requires a `config.json` mount with a `name` key, and returns: "Hello, {name}".
+## Available scripts
+
+In the project directory, you can run:
+
+### `npm start`
+
+Runs the app in the development mode.\
+Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+
+The page will reload if you make edits.\
+You will also see any lint errors in the console.
+
+### `npm run build`
+
+Builds the app for production to the `build` folder.\
+It correctly bundles React in production mode and optimizes the build for the best performance.
+
+The build is minified and the filenames include the hashes.\
+Your app is ready to be deployed!
+
+See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
