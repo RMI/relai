@@ -432,8 +432,8 @@ const APIContent = () => {
     const [graphData, setGraphData] = useState(null);
 
     function RequestData(formData) {
-        // Silently acquires an access token which is then attached to a request for MS Graph data
-        const url = formData.get("api_url");
+        const url = document.getElementById("api_url").value;
+
         instance
             .acquireTokenSilent({
                 ...loginRequest,
@@ -447,14 +447,12 @@ const APIContent = () => {
     return (
         <>
             <h5 className="api">API</h5>
-            <form action={RequestData}>
-                <label>
-                    API URL: <input name="api_url" />
-                </label>
-                <button variant="secondary" type="submit">
-                    Request API call
-                </button>
-            </form>
+            <label>
+                API URL: <input id="api_url" />
+            </label>
+            <Button variant="secondary" onClick={RequestData}>
+                Request API call
+            </Button>
             {graphData ? (
                 <APIData graphData={graphData} />
             ) : (
