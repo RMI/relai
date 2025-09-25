@@ -249,6 +249,8 @@ const ChatListContent = () => {
             });
     }
 
+    if (graphData === null) RequestData();
+
     return (
         <>
             <h5 className="chatList">Chat List</h5>
@@ -306,6 +308,8 @@ const TeamChannelsListContent = () => {
                     });
             });
     }
+
+    if (graphData === null) RequestData();
 
     return (
         <>
