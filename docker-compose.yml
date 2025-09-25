@@ -1,13 +1,6 @@
 services:
-  frontend:
+  app:
     build:
-      context: ./frontend
+      context: .
     ports:
       - 3000:3000
-    volumes:
-    - ./filestore:/config
-  backend:
-    build:
-      context: ./backend
-    volumes:
-    - ./filestore:/config
