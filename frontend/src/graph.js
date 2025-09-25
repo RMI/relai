@@ -54,8 +54,14 @@ export async function getChatMessages(accessToken, chat_id, daysBefore = daysBef
     // time format must be like 2025-08-10T00:00:00.000Z
 }
 
-export async function getFileList(accessToken) {
-    return getGraphResponse(accessToken, "https://graph.microsoft.com/v1.0/me/chats")
+export async function getFileList(accessToken, file_path, daysBefore = daysBefore_global) {
+    const url = "https://graph.microsoft.com/v1.0/me/drive/root:/" + file_path + ":/children";
+    const dir_list = await getGraphResponse(accessToken, url);
+    const recent_dir_list = dir_list.value
+        .filter(e => e.lastModifiedDateTime > getStartFromDateStr(daysBefore));
+    const file_list = recent_dir_list.filter(e => !e.folder);
+    const subfolder_list = recent_dir_list.filter(e => e.folder);
+    return file_list;
 }
 
 export async function getTeamList(accessToken) {

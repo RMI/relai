@@ -1,18 +1,19 @@
 import React from 'react';
 
 /**
- * Renders information about the user obtained from MS Graph
  * @param props
  */
-export const FilesData = (props) => {
+export const FilesListData = (props) => {
     const data = props.graphData;
     const result = data.map(e => ({
         id: e.id,
         type: "onedrive file",
-        date_time: e.lastModifiedDateTime,
-        author: e.lastModifiedBy.user.displayName,
-        content: e.text,
-        subject: e.name
+        lastModifiedDateTime: e.lastModifiedDateTime,
+        "lastModifiedBy.user.displayName": e.lastModifiedBy.user.displayName,
+        name: e.name,
+        "file.mimeType": e.file.mimeType,
+        webUrl: e.webUrl,
+        "parentReference.path": e.parentReference.path
     }));
 
     return (

@@ -3,13 +3,14 @@ import React, { useState } from 'react';
 import { PageLayout } from './components/PageLayout';
 import { loginRequest } from './authConfig';
 
-import { getGraphResponse, getProfile, getChannelMessageList, getChatList, getChatMembers, getChatMessages, getEmail, getTeamList, getStartFromDateStr, daysBefore_global } from './graph';
+import { getGraphResponse, getProfile, getChannelMessageList, getChatList, getChatMembers, getChatMessages, getEmail, getTeamList, getFileList, getStartFromDateStr, daysBefore_global } from './graph';
 import { ProfileData } from './components/ProfileData';
 import { ChannelMessageData } from './components/ChannelMessageData';
 import { ChatListData } from './components/ChatListData';
 import { ChatMessagesData } from './components/ChatMessagesData';
 import { EmailData } from './components/EmailData';
-import { FilesData } from './components/FilesData';
+import { FilesListData } from './components/FilesListData';
+import { FilesContentData } from './components/FilesContentData';
 import { TeamChannelsListData } from './components/TeamChannelsListData';
 import { APIData } from './components/APIData';
 import { ChatCompletionData } from './components/ChatCompletionData';
@@ -104,17 +105,10 @@ const ChatCompletion = () => {
                     const selected_chats = document.querySelector('input[name="chat_id"]:checked');
                     const selected_channels = document.querySelector('input[name="teamchannel_id"]:checked');
 
-                    const file_list_url = "https://graph.microsoft.com/v1.0/me/drive/root:/" + file_path + ":/children";
-
                     const email = getEmail(token);
 
-                    const file_content = getGraphResponse(token, file_list_url)
-                        .then((response) => {
-                            const dir_list = response.value
-                                .filter(e => e.lastModifiedDateTime > getStartFromDateStr(daysBefore_global));
-                            const file_list = dir_list.filter(e => !e.folder);
-                            const subfolder_list = dir_list.filter(e => e.folder);
-
+                    const file_content = getFileList(token, file_path)
+                        .then((file_list) => {
                             const urls = file_list.map(d => d["@microsoft.graph.downloadUrl"]);
 
                             async function get_content(url, callback) {
@@ -208,12 +202,17 @@ const ChatCompletion = () => {
     return (
         <>
             <h5 className="chatCompletion">RELAI Summary</h5>
+            <Button variant="secondary" onClick={RequestChatCompletion}>
+                Request RELAI Summary
+            </Button>
+            <br/>
+            <label>
+                File Path: <input id="file_path" defaultValue="test_folder" />
+            </label>
             {graphData ? (
                 <ChatCompletionData graphData={graphData} />
             ) : (
-                <Button variant="secondary" onClick={RequestChatCompletion}>
-                    Request RELAI Summary
-                </Button>
+                <br/>
             )}
         </>
     );
@@ -362,27 +361,62 @@ const ChannelMessageListContent = () => {
     );
 };
 
-const FilesContent = () => {
+const FilesList = () => {
     const { instance, accounts } = useMsal();
     const [graphData, setGraphData] = useState(null);
 
     function RequestData(formData) {
-        // Silently acquires an access token which is then attached to a request for MS Graph data
-        const file_path = formData.get("file_path");
-        const url = "https://graph.microsoft.com/v1.0/me/drive/root:/" + file_path + ":/children";
+        const file_path = document.getElementById("fileslist_file_path").value;
+
         instance
             .acquireTokenSilent({
                 ...loginRequest,
                 account: accounts[0],
             })
             .then((response) => {
-                getGraphResponse(response.accessToken, url)
-                    .then((response) => {
-                        const dir_list = response.value
-                            .filter(e => e.lastModifiedDateTime > getStartFromDateStr(daysBefore_global));
-                        const file_list = dir_list.filter(e => !e.folder);
-                        const subfolder_list = dir_list.filter(e => e.folder);
+                const token = response.accessToken;
+                getFileList(token, file_path)
+                    .then((result) => {
+                        setGraphData(result);
+                    })
+            });
+    }
 
+    return (
+        <>
+            <h5 className="api">Files List</h5>
+            <label>
+                File Path: <input id="fileslist_file_path" />
+            </label>
+            <Button variant="secondary" onClick={RequestData}>
+                Get Files List
+            </Button>
+            {graphData ? (
+                <FilesListData graphData={graphData} />
+            ) : (
+                <br/>
+            )}
+        </>
+    );
+};
+
+const FilesContent = () => {
+    const { instance, accounts } = useMsal();
+    const [graphData, setGraphData] = useState(null);
+
+    function RequestData(formData) {
+        const file_path = document.getElementById("filescontent_file_path").value;
+        const url = "https://graph.microsoft.com/v1.0/me/drive/root:/" + file_path + ":/children";
+
+        instance
+            .acquireTokenSilent({
+                ...loginRequest,
+                account: accounts[0],
+            })
+            .then((response) => {
+                const token = response.accessToken;
+                getFileList(token, file_path)
+                    .then((file_list) => {
                         const urls = file_list.map(d => d["@microsoft.graph.downloadUrl"]);
 
                         async function get_content(url, callback) {
@@ -404,24 +438,26 @@ const FilesContent = () => {
                                 }));
                                 setGraphData(result);
                             })
-                    });
+
+                    })
+
+
             });
     }
 
     return (
         <>
-            <h5 className="api">Files</h5>
+            <h5 className="api">Files Content</h5>
+            <label>
+                File Path: <input id="filescontent_file_path" />
+            </label>
+            <Button variant="secondary"  onClick={RequestData}>
+                Get Files Content
+            </Button>
             {graphData ? (
-                <FilesData graphData={graphData} />
+                <FilesContentData graphData={graphData} />
             ) : (
-                <form action={RequestData}>
-                    <label>
-                        File Path: <input name="file_path" />
-                    </label>
-                    <button variant="secondary" type="submit">
-                        Get Files
-                    </button>
-                </form>
+                <br/>
             )}
         </>
     );
@@ -542,10 +578,6 @@ const MainContent = () => {
         <div className="App">
             <AuthenticatedTemplate>
                 <ChatCompletion />
-                <br />
-                <label>
-                    File Path: <input id="file_path" defaultValue="test_folder" />
-                </label>
                 <ChatListContent />
                 <TeamChannelsListContent />
                 <hr />
@@ -559,6 +591,7 @@ const MainContent = () => {
                         <EmailContent />
                         <ChatMessagesContent />
                         <ChannelMessageListContent />
+                        <FilesList />
                         <FilesContent />
                     </div>
                 </Collapse>
