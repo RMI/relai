@@ -206,14 +206,15 @@ const ChatCompletion = () => {
                 Request RELAI Summary
             </Button>
             <br/>
-            <label>
-                File Path: <input id="file_path" defaultValue="test_folder" />
-            </label>
             {graphData ? (
                 <ChatCompletionData graphData={graphData} />
             ) : (
                 <br/>
             )}
+            <h5 className="filepath_head">File Path</h5>
+            <input id="file_path" defaultValue="test_folder" />
+            <br/>
+            <br/>
         </>
     );
 };
