@@ -602,6 +602,11 @@ const MainContent = () => {
 
             <UnauthenticatedTemplate>
                 <h5 className="card-title">Please sign-in to see your profile information.</h5>
+                {"redirect URL: " + import.meta.env.VITE_REACT_APP_REDIRECT_URI}<br/>
+                <pre style={{textAlign: "left", whiteSpace: "pre-wrap"}}>
+                    {JSON.stringify(import.meta.env, null, "\t")}
+                </pre>
+
             </UnauthenticatedTemplate>
         </div>
     );
