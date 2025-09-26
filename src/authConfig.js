@@ -63,7 +63,8 @@ export const loginRequest = {
         "Mail.Read",
         "Team.ReadBasic.All",
         "Channel.ReadBasic.All",
-        "ChannelMessage.Read.All"
+        "ChannelMessage.Read.All",
+        "Sites.Read.All"
     ]
 };
 
