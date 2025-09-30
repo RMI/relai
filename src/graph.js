@@ -68,6 +68,15 @@ export async function getTeamList(accessToken) {
     return getGraphResponse(accessToken, "https://graph.microsoft.com/v1.0/teams")
 }
 
+export async function getGroupList(accessToken) {
+    const profile_data = await getProfile(accessToken);
+    const api_url =
+        "https://graph.microsoft.com/v1.0/users/" +
+        profile_data.id +
+        "/teamwork/associatedTeams";
+    return getGraphResponse(accessToken, api_url);
+}
+
 export function getStartFromDateStr(daysBefore = daysBefore_global) {
     var incrementDate = function (date, amount) {
         var tmpDate = new Date(date);
