@@ -1,4 +1,4 @@
-import {daysBefore_global} from './values';
+import { daysBefore_global } from './values';
 
 export async function getGraphResponse(accessToken, url) {
     const headers = new Headers();

@@ -1,5 +1,5 @@
-import {systemPrompt, userPrompt} from './Prompts';
-import {daysBefore_global} from './daysBefore_global';
+import { systemPrompt, userPrompt } from './Prompts';
+import { daysBefore_global } from './daysBefore_global';
 
 export {
     systemPrompt,
