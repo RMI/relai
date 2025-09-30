@@ -65,7 +65,7 @@ export async function getFileList(accessToken, file_path, daysBefore = daysBefor
 }
 
 export async function getTeamList(accessToken) {
-    return getGraphResponse(accessToken, "https://graph.microsoft.com/v1.0/teams")
+    return getGraphResponse(accessToken, "https://graph.microsoft.com/v1.0/me/joinedTeams")
 }
 
 export function getStartFromDateStr(daysBefore = daysBefore_global) {
