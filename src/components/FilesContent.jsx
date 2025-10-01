@@ -3,7 +3,7 @@ import Button from 'react-bootstrap/Button';
 import { useMsal } from '@azure/msal-react';
 
 import { loginRequest } from '../authConfig';
-import { getFileList } from '../graph';
+import { getFilesContent } from '../graph';
 import { FilesContentData } from '../dataview';
 
 export const FilesContent = () => {
