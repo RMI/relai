@@ -30,6 +30,7 @@ const MainContent = () => {
                         <component.ChannelMessageListContent />
                         <component.FilesList />
                         <component.FilesContent />
+                        <component.GroupFilesList />
                     </div>
                 </Collapse>
             </AuthenticatedTemplate>

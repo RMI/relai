@@ -7,6 +7,7 @@ import { EmailContent } from './EmailContent';
 import { FilesContent } from './FilesContent';
 import { FilesList } from './FilesList';
 import { GroupsContent } from './GroupsContent';
+import { GroupFilesList } from './GroupFilesList';
 import { PageLayout } from './PageLayout';
 import { ProfileContent } from './ProfileContent';
 import { SignInButton } from './SignInButton';
@@ -23,6 +24,7 @@ export {
     FilesContent,
     FilesList,
     GroupsContent,
+    GroupFilesList,
     PageLayout,
     ProfileContent,
     SignInButton,

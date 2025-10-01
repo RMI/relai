@@ -64,6 +64,21 @@ export async function getFileList(accessToken, file_path, daysBefore = daysBefor
     return file_list;
 }
 
+export async function getGroupFileList(accessToken, group_id, file_path, daysBefore = daysBefore_global) {
+    const api_url =
+        "https://graph.microsoft.com/v1.0/groups/" +
+        group_id +
+        "/drive/root:/" +
+        file_path +
+        ":/children";
+    const dir_list = await getGraphResponse(accessToken, api_url);
+    const recent_dir_list = dir_list.value
+        .filter(e => e.lastModifiedDateTime > getStartFromDateStr(daysBefore));
+    const file_list = recent_dir_list.filter(e => !e.folder);
+    const subfolder_list = recent_dir_list.filter(e => e.folder);
+    return file_list;
+}
+
 export async function getTeamList(accessToken) {
     return getGraphResponse(accessToken, "https://graph.microsoft.com/v1.0/me/joinedTeams")
 }
