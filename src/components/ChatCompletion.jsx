@@ -14,7 +14,7 @@ export const ChatCompletion = () => {
 
     function RequestChatCompletion() {
         const endpoint = import.meta.env.VITE_AZURE_FOUNDRY_ENDPOINT;
-        const apiKey = import.meta.env.VITE_AZURE_FOUNDRY_KEY;
+        const apiKey = import.meta.env.AZURE_FOUNDRY_KEY;
         const apiVersion = import.meta.env.VITE_AZURE_FOUNDRY_API_VERSION;
         const deployment = import.meta.env.VITE_AZURE_FOUNDRY_MODEL;
 
