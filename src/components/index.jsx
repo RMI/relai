@@ -6,6 +6,7 @@ import { ChatListContent } from './ChatListContent';
 import { EmailContent } from './EmailContent';
 import { FilesContent } from './FilesContent';
 import { FilesList } from './FilesList';
+import { GroupsContent } from './GroupsContent';
 import { PageLayout } from './PageLayout';
 import { ProfileContent } from './ProfileContent';
 import { SignInButton } from './SignInButton';
@@ -21,6 +22,7 @@ export {
     EmailContent,
     FilesContent,
     FilesList,
+    GroupsContent,
     PageLayout,
     ProfileContent,
     SignInButton,

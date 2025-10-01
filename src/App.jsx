@@ -25,6 +25,7 @@ const MainContent = () => {
                         <component.ProfileContent />
                         <component.APIContent />
                         <component.EmailContent />
+                        <component.GroupsContent />
                         <component.ChatMessagesContent />
                         <component.ChannelMessageListContent />
                         <component.FilesList />

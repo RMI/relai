@@ -6,6 +6,7 @@ import { ChatMessagesData } from './ChatMessagesData';
 import { EmailData } from './EmailData';
 import { FilesContentData } from './FilesContentData';
 import { FilesListData } from './FilesListData';
+import { GroupData } from './GroupData';
 import { ProfileData } from './ProfileData';
 import { TeamChannelsListData } from './TeamChannelsListData';
 
@@ -18,6 +19,7 @@ export {
     EmailData,
     FilesContentData,
     FilesListData,
+    GroupData,
     ProfileData,
     TeamChannelsListData
 }
