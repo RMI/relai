@@ -86,18 +86,7 @@ export async function getGroupFilesContent(accessToken, group_id, file_path, day
 
     const urls = file_list.map(d => d["@microsoft.graph.downloadUrl"]);
 
-    async function get_content(url, callback) {
-       const config = {
-            newlineDelimiter: " ",
-            ignoreNotes: true
-        };
-        const response = await fetch(url);
-        const arrayBuffer = await response.arrayBuffer();
-        const result = await officeParser.parseOfficeAsync(arrayBuffer, config);
-        return result;
-    }
-
-    const result = await Promise.all(urls.map(a => get_content(a)))
+    const result = await Promise.all(urls.map(a => getFileContent(a)))
         .then((text) => {
             return file_list.map((e, i) => ({
                 ...e,
