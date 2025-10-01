@@ -69,7 +69,7 @@ export async function getFileList(accessToken, file_path, daysBefore = daysBefor
     return file_list;
 }
 
-export async function getFileContent(accessToken, file_url) {
+export async function getFileContent(file_url) {
     const config = {
         newlineDelimiter: " ",
         ignoreNotes: true
@@ -87,7 +87,7 @@ export async function getFilesContent(accessToken, file_path, daysBefore = daysB
 
     const urls = file_list.map(d => d["@microsoft.graph.downloadUrl"]);
 
-    const result = await Promise.all(urls.map(a => getFileContent(accessToken, a)))
+    const result = await Promise.all(urls.map(a => getFileContent(a)))
         .then((text) => {
             return file_list.map((e, i) => ({
                 ...e,
