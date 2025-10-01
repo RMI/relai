@@ -74,9 +74,38 @@ export async function getGroupFileList(accessToken, group_id, file_path, daysBef
     const dir_list = await getGraphResponse(accessToken, api_url);
     const recent_dir_list = dir_list.value
         .filter(e => e.lastModifiedDateTime > getStartFromDateStr(daysBefore));
-    const file_list = recent_dir_list.filter(e => !e.folder);
+    const file_list = recent_dir_list.filter(e => e.file);
     const subfolder_list = recent_dir_list.filter(e => e.folder);
     return file_list;
+}
+
+export async function getGroupFilesContent(accessToken, group_id, file_path, daysBefore = daysBefore_global) {
+    const file_list = await getGroupFileList(accessToken, group_id, file_path);
+
+    // filter to files that officeParser can parse
+
+    const urls = file_list.map(d => d["@microsoft.graph.downloadUrl"]);
+
+    async function get_content(url, callback) {
+       const config = {
+            newlineDelimiter: " ",
+            ignoreNotes: true
+        };
+        const response = await fetch(url);
+        const arrayBuffer = await response.arrayBuffer();
+        const result = await officeParser.parseOfficeAsync(arrayBuffer, config);
+        return result;
+    }
+
+    const result = await Promise.all(urls.map(a => get_content(a)))
+        .then((text) => {
+            return file_list.map((e, i) => ({
+                ...e,
+                text: text[i]
+            }));
+        });
+
+    return result;
 }
 
 export async function getTeamList(accessToken) {
