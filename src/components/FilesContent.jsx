@@ -21,33 +21,8 @@ export const FilesContent = () => {
             })
             .then((response) => {
                 const token = response.accessToken;
-                getFileList(token, file_path)
-                    .then((file_list) => {
-                        const urls = file_list.map(d => d["@microsoft.graph.downloadUrl"]);
-
-                        async function get_content(url, callback) {
-                           const config = {
-                                newlineDelimiter: " ",
-                                ignoreNotes: true
-                            }
-                            const response = await fetch(url);
-                            const arrayBuffer = await response.arrayBuffer();
-                            const result = await officeParser.parseOfficeAsync(arrayBuffer, config);
-                            return(result);
-                        }
-
-                        Promise.all(urls.map(a => get_content(a)))
-                            .then((text) => {
-                                const result = file_list.map((e,i) => ({
-                                    ...e,
-                                    text: text[i]
-                                }));
-                                setGraphData(result);
-                            })
-
-                    })
-
-
+                getFilesContent(token, file_path)
+                    .then(result => setGraphData(result));
             });
     }
 
