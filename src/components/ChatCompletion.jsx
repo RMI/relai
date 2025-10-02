@@ -53,8 +53,8 @@ export const ChatCompletion = () => {
                     const token = response.accessToken;
 
                     const file_path = document.getElementById("file_path").value;
-                    const selected_chats = document.querySelector('input[name="chat_id"]:checked');
-                    const selected_channels = document.querySelector('input[name="teamchannel_id"]:checked');
+                    const selected_chats_ids = Array.from(document.querySelectorAll("input[name='chat_id']:checked"), e => e.value);
+                    const selected_channels = document.querySelectorAll('input[name="teamchannel_id"]:checked');
 
                     const email = getEmail(token);
 
@@ -83,17 +83,16 @@ export const ChatCompletion = () => {
                                 })
                         });
 
-                    let chat_msgs = Promise.resolve({value:[]});
-                    if (selected_chats !== null) {
-                        const chat_id = selected_chats.id;
-                        chat_msgs = getChatMessages(token, chat_id);
+                    let chat_msgs = Promise.resolve([]);
+                    if (selected_chats_ids.length >= 1) {
+                        chat_msgs = getChatMessages(token, selected_chats_ids);
                     }
 
-                    let channel_msgs = Promise.resolve({value:[]});
-                    if (selected_channels !== null) {
-                        const team_id = selected_channels.dataset.team_id;
-                        const channel_id = selected_channels.dataset.channel_id;
-                        channel_msgs = getChannelMessageList(token, team_id, channel_id);
+                    let channel_msgs = Promise.resolve([]);
+                    if (selected_channels.length >= 1) {
+                        const selected_team_ids = [...selected_channels].map(e => e.dataset.team_id);
+                        const selected_channels_ids = [...selected_channels].map(e => e.dataset.channel_id);
+                        channel_msgs = getChannelMessageList(token, selected_team_ids, selected_channels_ids);
                     }
 
                     Promise.all([email, file_content, chat_msgs, channel_msgs])
@@ -116,7 +115,7 @@ export const ChatCompletion = () => {
                                 subject: e.name || ""
                             }));
 
-                            const chat_msgs_result = chat_msgs.value.map(e => ({
+                            const chat_msgs_result = chat_msgs.map(e => ({
                                 id: e.id,
                                 type: "chat message",
                                 date_time: e.lastModifiedDateTime,
@@ -125,7 +124,7 @@ export const ChatCompletion = () => {
                                 subject: e.subject || ""
                             }));
 
-                            const channel_msgs_result = channel_msgs.value.map(e => ({
+                            const channel_msgs_result = channel_msgs.map(e => ({
                                 id: e.id,
                                 type: "channel message",
                                 date_time: e.lastModifiedDateTime,

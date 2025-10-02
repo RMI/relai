@@ -11,20 +11,18 @@ export const ChatMessagesContent = () => {
     const [graphData, setGraphData] = useState(null);
 
     function RequestData(formData) {
-        const selected_chats = document.querySelector('input[name="chat_id"]:checked');
+        const selected_chats_ids = Array.from(document.querySelectorAll("input[name='chat_id']:checked"), e => e.value);
 
-        if (selected_chats === null) {
+        if (selected_chats_ids.length < 1) {
             setGraphData(null);
         } else {
-            const chat_id = selected_chats.id;
-
             instance
                 .acquireTokenSilent({
                     ...loginRequest,
                     account: accounts[0],
                 })
                 .then((response) => {
-                    getChatMessages(response.accessToken, chat_id)
+                    getChatMessages(response.accessToken, selected_chats_ids)
                       .then((response) => setGraphData(response));
                 });
         }
