@@ -4,7 +4,7 @@ import { useMsal } from '@azure/msal-react';
 import { AzureOpenAI } from 'openai';
 
 import { loginRequest } from '../authConfig';
-import { getEmail, getFileList, getChatMessages, getChannelMessageList } from '../graph';
+import { getEmail, getFilesContent, getChatMessages, getChannelMessageList, getGroupFilesContent } from '../graph';
 import { ChatCompletionData } from '../dataview';
 import { systemPrompt, userPrompt } from '../values';
 
@@ -52,36 +52,18 @@ export const ChatCompletion = () => {
                 .then((response) => {
                     const token = response.accessToken;
 
-                    const file_path = document.getElementById("file_path").value;
-                    const selected_chats_ids = Array.from(document.querySelectorAll("input[name='chat_id']:checked"), e => e.value);
-                    const selected_channels = document.querySelectorAll('input[name="teamchannel_id"]:checked');
+                    const file_paths = Array.from(document.querySelectorAll("#file_path"), e => e.value);
+                    const selected_chats = document.querySelector('input[name="chat_id"]:checked');
+                    const selected_channels = document.querySelector('input[name="teamchannel_id"]:checked');
+                    const selected_group = document.querySelector('input[name="group_select"]:checked');
+                    const group_file_paths = Array.from(document.querySelectorAll("#group_file_path"), e => e.value);
 
                     const email = getEmail(token);
 
-                    const file_content = getFileList(token, file_path)
-                        .then((file_list) => {
-                            const urls = file_list.map(d => d["@microsoft.graph.downloadUrl"]);
-
-                            async function get_content(url, callback) {
-                               const config = {
-                                    newlineDelimiter: " ",
-                                    ignoreNotes: true
-                                }
-                                const response = await fetch(url);
-                                const arrayBuffer = await response.arrayBuffer();
-                                const result = await officeParser.parseOfficeAsync(arrayBuffer, config);
-                                return(result);
-                            }
-
-                            return Promise.all(urls.map(a => get_content(a)))
-                                .then((text) => {
-                                    const result = file_list.map((e,i) => ({
-                                        ...e,
-                                        text: text[i]
-                                    }));
-                                    return(result);
-                                })
-                        });
+                    let file_content = Promise.resolve([]);
+                    if (file_path !== null && file_path != "") {
+                        file_content = getFilesContent(token, file_paths);
+                    }
 
                     let chat_msgs = Promise.resolve([]);
                     if (selected_chats_ids.length >= 1) {
@@ -95,8 +77,14 @@ export const ChatCompletion = () => {
                         channel_msgs = getChannelMessageList(token, selected_team_ids, selected_channels_ids);
                     }
 
-                    Promise.all([email, file_content, chat_msgs, channel_msgs])
-                        .then(([email, file_content, chat_msgs, channel_msgs]) => {
+                    let group_file_content = Promise.resolve([]);
+                    if (selected_group !== null) {
+                        const group_id = selected_group.dataset.group_id;
+                        group_file_content = getGroupFilesContent(token, group_id, group_file_paths);
+                    }
+
+                    Promise.all([email, file_content, chat_msgs, channel_msgs, group_file_content])
+                        .then(([email, file_content, chat_msgs, channel_msgs, group_file_content]) => {
                             const email_result = email.value.map(e => ({
                                 id: e.id,
                                 type: "email",
@@ -133,7 +121,16 @@ export const ChatCompletion = () => {
                                 subject: e.subject || ""
                             }));
 
-                            const content = email_result.concat(file_content_result, chat_msgs_result, channel_msgs_result);
+                            const group_file_content_result = group_file_content.map(e => ({
+                                id: e.id,
+                                type: "group file",
+                                date_time: e.lastModifiedDateTime,
+                                author: e.lastModifiedBy?.user?.displayName || "",
+                                content: e.text || "",
+                                subject: e.name || ""
+                            }));
+
+                            const content = email_result.concat(file_content_result, chat_msgs_result, channel_msgs_result, group_file_content_result);
 
                             main(content)
                                 .then((result) => {
@@ -161,8 +158,10 @@ export const ChatCompletion = () => {
             ) : (
                 <br/>
             )}
-            <h5 className="filepath_head">File Path</h5>
+            <h5 className="filepath_head">File Paths</h5>
             <input id="file_path" defaultValue="test_folder" />
+            <br />
+            <input id="file_path" defaultValue="test_folder2" />
             <br/>
             <br/>
         </>
