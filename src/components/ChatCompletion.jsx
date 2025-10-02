@@ -52,7 +52,7 @@ export const ChatCompletion = () => {
                 .then((response) => {
                     const token = response.accessToken;
 
-                    const file_path = document.getElementById("file_path").value;
+                    const file_paths = Array.from(document.querySelectorAll("#file_path"), e => e.value);
                     const selected_chats = document.querySelector('input[name="chat_id"]:checked');
                     const selected_channels = document.querySelector('input[name="teamchannel_id"]:checked');
 
@@ -60,7 +60,7 @@ export const ChatCompletion = () => {
 
                     let file_content = Promise.resolve([]);
                     if (file_path !== null && file_path != "") {
-                        file_content = getFilesContent(token, file_path);
+                        file_content = getFilesContent(token, file_paths);
                     }
 
                     let chat_msgs = Promise.resolve({value:[]});
@@ -142,8 +142,10 @@ export const ChatCompletion = () => {
             ) : (
                 <br/>
             )}
-            <h5 className="filepath_head">File Path</h5>
+            <h5 className="filepath_head">File Paths</h5>
             <input id="file_path" defaultValue="test_folder" />
+            <br />
+            <input id="file_path" defaultValue="test_folder2" />
             <br/>
             <br/>
         </>

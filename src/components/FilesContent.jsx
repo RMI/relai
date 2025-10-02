@@ -11,7 +11,7 @@ export const FilesContent = () => {
     const [graphData, setGraphData] = useState(null);
 
     function RequestData(formData) {
-        const file_path = document.getElementById("filescontent_file_path").value;
+        const file_paths = Array.from(document.querySelectorAll("#filescontent_file_path"), e => e.value);
         const url = "https://graph.microsoft.com/v1.0/me/drive/root:/" + file_path + ":/children";
 
         instance
@@ -21,7 +21,7 @@ export const FilesContent = () => {
             })
             .then((response) => {
                 const token = response.accessToken;
-                getFilesContent(token, file_path)
+                getFilesContent(token, file_paths)
                     .then(result => setGraphData(result));
             });
     }
@@ -29,12 +29,17 @@ export const FilesContent = () => {
     return (
         <>
             <h5 className="api">Files Content</h5>
-            <label>
-                File Path: <input id="filescontent_file_path" />
-            </label>
             <Button variant="secondary"  onClick={RequestData}>
                 Get Files Content
             </Button>
+            <br />
+            <label>
+                File Paths: <input id="filescontent_file_path" />
+            </label>
+            <br />
+            <label>
+                File Paths: <input id="filescontent_file_path" />
+            </label>
             {graphData ? (
                 <FilesContentData graphData={graphData} />
             ) : (
