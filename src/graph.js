@@ -55,13 +55,70 @@ export async function getChatMessages(accessToken, chat_id, daysBefore = daysBef
 }
 
 export async function getFileList(accessToken, file_path, daysBefore = daysBefore_global) {
-    const url = "https://graph.microsoft.com/v1.0/me/drive/root:/" + file_path + ":/children";
-    const dir_list = await getGraphResponse(accessToken, url);
+    const api_url =
+        "https://graph.microsoft.com/v1.0/me/drive/root:/" +
+        file_path +
+        ":/children";
+    const dir_list = await getGraphResponse(accessToken, api_url);
+
     const recent_dir_list = dir_list.value
         .filter(e => e.lastModifiedDateTime > getStartFromDateStr(daysBefore));
-    const file_list = recent_dir_list.filter(e => !e.folder);
+    const file_list = recent_dir_list.filter(e => e.file);
     const subfolder_list = recent_dir_list.filter(e => e.folder);
+
     return file_list;
+}
+
+export async function getFileListFromMultiplePaths(accessToken, file_paths, daysBefore = daysBefore_global) {
+  file_paths = file_paths.filter(e => e); // remove null, undefined, and ""
+
+  const file_paths_uniq = [...new Set(file_paths)];
+
+  const filelists_promise = file_paths_uniq
+  .map(file_path => getFileList(accessToken, file_path, daysBefore));
+
+  let filelists = await Promise.all(filelists_promise);
+  filelists = filelists.flat();
+
+  return filelists;
+}
+
+export async function getFileContent(file_url) {
+    const config = {
+        newlineDelimiter: " ",
+        ignoreNotes: true
+    };
+    const response = await fetch(file_url);
+    const arrayBuffer = await response.arrayBuffer();
+    const result = await officeParser.parseOfficeAsync(arrayBuffer, config);
+    return result;
+}
+
+export async function getFilesContent(accessToken, file_paths, daysBefore = daysBefore_global) {
+    let file_list = await getFileListFromMultiplePaths(accessToken, file_paths, daysBefore);
+
+    // filter to files that officeParser can parse
+    // https://github.com/harshankur/officeParser?tab=readme-ov-file#supported-file-types
+    // https://learn.microsoft.com/en-us/azure/communication-services/concepts/email/email-attachment-allowed-mime-types#attachment-types
+    const mimeTypes = new Set([
+        "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+        "application/vnd.openxmlformats-officedocument.presentationml.presentation",
+        "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+        "application/pdf"
+    ]);
+    file_list = file_list.filter(e => mimeTypes.has(e.file.mimeType));
+
+    const urls = file_list.map(d => d["@microsoft.graph.downloadUrl"]);
+
+    const result = await Promise.all(urls.map(a => getFileContent(a)))
+        .then((text) => {
+            return file_list.map((e, i) => ({
+                ...e,
+                text: text[i]
+            }));
+        });
+
+    return result;
 }
 
 export async function getGroupFileList(accessToken, group_id, file_path, daysBefore = daysBefore_global) {
@@ -83,6 +140,15 @@ export async function getGroupFilesContent(accessToken, group_id, file_path, day
     const file_list = await getGroupFileList(accessToken, group_id, file_path);
 
     // filter to files that officeParser can parse
+    // https://github.com/harshankur/officeParser?tab=readme-ov-file#supported-file-types
+    // https://learn.microsoft.com/en-us/azure/communication-services/concepts/email/email-attachment-allowed-mime-types#attachment-types
+    const mimeTypes = new Set([
+        "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+        "application/vnd.openxmlformats-officedocument.presentationml.presentation",
+        "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+        "application/pdf"
+    ]);
+    file_list = file_list.filter(e => mimeTypes.has(e.file.mimeType));
 
     const urls = file_list.map(d => d["@microsoft.graph.downloadUrl"]);
 

@@ -4,7 +4,7 @@ import { useMsal } from '@azure/msal-react';
 import { AzureOpenAI } from 'openai';
 
 import { loginRequest } from '../authConfig';
-import { getEmail, getFileList, getChatMessages, getChannelMessageList, getGroupFilesContent } from '../graph';
+import { getEmail, getFilesContent, getChatMessages, getChannelMessageList, getGroupFilesContent } from '../graph';
 import { ChatCompletionData } from '../dataview';
 import { systemPrompt, userPrompt } from '../values';
 
@@ -52,7 +52,7 @@ export const ChatCompletion = () => {
                 .then((response) => {
                     const token = response.accessToken;
 
-                    const file_path = document.getElementById("file_path").value;
+                    const file_paths = Array.from(document.querySelectorAll("#file_path"), e => e.value);
                     const selected_chats = document.querySelector('input[name="chat_id"]:checked');
                     const selected_channels = document.querySelector('input[name="teamchannel_id"]:checked');
                     const selected_group = document.querySelector('input[name="group_select"]:checked');
@@ -60,30 +60,10 @@ export const ChatCompletion = () => {
 
                     const email = getEmail(token);
 
-                    const file_content = getFileList(token, file_path)
-                        .then((file_list) => {
-                            const urls = file_list.map(d => d["@microsoft.graph.downloadUrl"]);
-
-                            async function get_content(url, callback) {
-                               const config = {
-                                    newlineDelimiter: " ",
-                                    ignoreNotes: true
-                                }
-                                const response = await fetch(url);
-                                const arrayBuffer = await response.arrayBuffer();
-                                const result = await officeParser.parseOfficeAsync(arrayBuffer, config);
-                                return(result);
-                            }
-
-                            return Promise.all(urls.map(a => get_content(a)))
-                                .then((text) => {
-                                    const result = file_list.map((e,i) => ({
-                                        ...e,
-                                        text: text[i]
-                                    }));
-                                    return(result);
-                                })
-                        });
+                    let file_content = Promise.resolve([]);
+                    if (file_path !== null && file_path != "") {
+                        file_content = getFilesContent(token, file_paths);
+                    }
 
                     let chat_msgs = Promise.resolve({value:[]});
                     if (selected_chats !== null) {
@@ -179,8 +159,10 @@ export const ChatCompletion = () => {
             ) : (
                 <br/>
             )}
-            <h5 className="filepath_head">File Path</h5>
+            <h5 className="filepath_head">File Paths</h5>
             <input id="file_path" defaultValue="test_folder" />
+            <br />
+            <input id="file_path" defaultValue="test_folder2" />
             <br/>
             <br/>
         </>
