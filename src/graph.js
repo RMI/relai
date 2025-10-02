@@ -84,6 +84,15 @@ export async function getFilesContent(accessToken, file_path, daysBefore = daysB
     const file_list = await getFileList(accessToken, file_path, daysBefore);
 
     // filter to files that officeParser can parse
+    // https://github.com/harshankur/officeParser?tab=readme-ov-file#supported-file-types
+    // https://learn.microsoft.com/en-us/azure/communication-services/concepts/email/email-attachment-allowed-mime-types#attachment-types
+    const mimeTypes = new Set([
+        "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+        "application/vnd.openxmlformats-officedocument.presentationml.presentation",
+        "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+        "application/pdf"
+    ]);
+    file_list = file_list.filter(e => mimeTypes.has(e.file.mimeType));
 
     const urls = file_list.map(d => d["@microsoft.graph.downloadUrl"]);
 
