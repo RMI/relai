@@ -28,13 +28,27 @@ export async function getChannelList(accessToken, team_id) {
     return getGraphResponse(accessToken, "https://graph.microsoft.com/v1.0/teams/" + team_id + "/channels")
 }
 
-export async function getChannelMessageList(accessToken, team_id, channel_id, daysBefore = daysBefore_global) {
-    return getGraphResponse(accessToken, "https://graph.microsoft.com/v1.0/teams/" + team_id + "/channels/" + channel_id + "/messages/delta?$filter=lastModifiedDateTime gt " + getStartFromDateStr(daysBefore) + "T00:00:00.000Z")
-    // must filter from append delta endpoint
-    // must filter by lastModifiedDateTime, not createdDateTime
-    // must filter with gt, not ge
-    // time format must be like 2025-08-10T00:00:00.000Z
-    // get replies too: ?&$expand=replies
+export async function getChannelMessageList(accessToken, team_ids, channel_ids, daysBefore = daysBefore_global) {
+    const msgs_promises = channel_ids.map((channel_id, i) => {
+        return getGraphResponse(
+            accessToken,
+            "https://graph.microsoft.com/v1.0/teams/" +
+                team_ids[i] +
+                "/channels/" +
+                channel_id +
+                "/messages/delta?$filter=lastModifiedDateTime gt " +
+                getStartFromDateStr(daysBefore) +
+                "T00:00:00.000Z"
+            // must filter from append delta endpoint
+            // must filter by lastModifiedDateTime, not createdDateTime
+            // must filter with gt, not ge
+            // time format must be like 2025-08-10T00:00:00.000Z
+            // get replies too: ?&$expand=replies
+        );
+    });
+
+    const messages = await Promise.all(msgs_promises);
+    return messages.map(e => e.value).flat();
 }
 
 export async function getChatList(accessToken) {
@@ -47,11 +61,23 @@ export async function getChatMembers(accessToken, chat_id) {
         .catch(error => console.log(error));
 }
 
-export async function getChatMessages(accessToken, chat_id, daysBefore = daysBefore_global) {
-    return getGraphResponse(accessToken, "https://graph.microsoft.com/v1.0/me/chats/" + chat_id + "/messages?$filter=lastModifiedDateTime gt " + getStartFromDateStr(daysBefore) + "T00:00:00.000Z")
-    // must filter by lastModifiedDateTime, not createdDateTime
-    // must filter with gt, not ge
-    // time format must be like 2025-08-10T00:00:00.000Z
+export async function getChatMessages(accessToken, chats_ids, daysBefore = daysBefore_global) {
+    const msgs_promises = chats_ids.map(chat_id => {
+        return getGraphResponse(
+            accessToken,
+            "https://graph.microsoft.com/v1.0/me/chats/" +
+                chat_id +
+                "/messages?$filter=lastModifiedDateTime gt " +
+                getStartFromDateStr(daysBefore) +
+                "T00:00:00.000Z"
+            // must filter by lastModifiedDateTime, not createdDateTime
+            // must filter with gt, not ge
+            // time format must be like 2025-08-10T00:00:00.000Z
+        );
+    });
+
+    const messages = await Promise.all(msgs_promises);
+    return messages.map(e => e.value).flat();
 }
 
 export async function getFileList(accessToken, file_path, daysBefore = daysBefore_global) {

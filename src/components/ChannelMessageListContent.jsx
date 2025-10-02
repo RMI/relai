@@ -11,13 +11,13 @@ export const ChannelMessageListContent = () => {
     const [graphData, setGraphData] = useState(null);
 
     function RequestData(formData) {
-        const selected_channels = document.querySelector('input[name="teamchannel_id"]:checked');
+        const selected_channels = document.querySelectorAll('input[name="teamchannel_id"]:checked');
 
         if (selected_channels === null) {
             setGraphData(null);
         } else {
-            const team_id = selected_channels.dataset.team_id;
-            const channel_id = selected_channels.dataset.channel_id;
+            const selected_team_ids = [...selected_channels].map(e => e.dataset.team_id);
+            const selected_channels_ids = [...selected_channels].map(e => e.dataset.channel_id);
 
             instance
                 .acquireTokenSilent({
@@ -25,7 +25,7 @@ export const ChannelMessageListContent = () => {
                     account: accounts[0],
                 })
                 .then((response) => {
-                    getChannelMessageList(response.accessToken, team_id, channel_id)
+                    getChannelMessageList(response.accessToken, selected_team_ids, selected_channels_ids)
                         .then((response) => setGraphData(response));
                 });
         }
