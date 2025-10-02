@@ -34,11 +34,11 @@ export const FilesContent = () => {
             </Button>
             <br />
             <label>
-                File Paths: <input id="filescontent_file_path" />
+                File Path: <input id="filescontent_file_path" />
             </label>
             <br />
             <label>
-                File Paths: <input id="filescontent_file_path" />
+                File Path: <input id="filescontent_file_path" />
             </label>
             {graphData ? (
                 <FilesContentData graphData={graphData} />
