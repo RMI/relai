@@ -81,7 +81,7 @@ export async function getFileContent(file_url) {
 }
 
 export async function getFilesContent(accessToken, file_path, daysBefore = daysBefore_global) {
-    const file_list = await getFileList(accessToken, file_path, daysBefore);
+    let file_list = await getFileList(accessToken, file_path, daysBefore);
 
     // filter to files that officeParser can parse
     // https://github.com/harshankur/officeParser?tab=readme-ov-file#supported-file-types
