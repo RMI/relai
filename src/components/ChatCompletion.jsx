@@ -156,16 +156,20 @@ export const ChatCompletion = () => {
             <Button variant="secondary" onClick={RequestChatCompletion}>
                 Request RELAI Summary
             </Button>
-            <br/>
+            <br />
             {graphData ? (
                 <ChatCompletionData graphData={graphData} />
             ) : (
-                <br/>
+                <br />
             )}
+            <h5 className="project_name_section">Project Name</h5>
+            <input id="project_name" />
+            <br />
+            <br />
             <h5 className="filepath_head">File Path</h5>
             <input id="file_path" defaultValue="test_folder" />
-            <br/>
-            <br/>
+            <br />
+            <br />
         </>
     );
 };
