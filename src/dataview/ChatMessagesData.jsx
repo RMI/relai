@@ -5,7 +5,7 @@ import React from "react";
  * @param props
  */
 export const ChatMessagesData = (props) => {
-    const data = props.graphData.value;
+    const data = props.graphData;
     const result = data.map(e => ({
         id: e.id,
         type: "chat message",
