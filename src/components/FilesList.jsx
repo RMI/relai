@@ -3,7 +3,7 @@ import Button from 'react-bootstrap/Button';
 import { useMsal } from '@azure/msal-react';
 
 import { loginRequest } from '../authConfig';
-import { getFileList } from '../graph';
+import { getFileListFromMultiplePaths } from '../graph';
 import { FilesListData } from '../dataview';
 
 export const FilesList = () => {
@@ -11,7 +11,7 @@ export const FilesList = () => {
     const [graphData, setGraphData] = useState(null);
 
     function RequestData(formData) {
-        const file_path = document.getElementById("fileslist_file_path").value;
+        const file_paths = Array.from(document.querySelectorAll("#fileslist_file_path"), e => e.value);
 
         instance
             .acquireTokenSilent({
@@ -20,7 +20,7 @@ export const FilesList = () => {
             })
             .then((response) => {
                 const token = response.accessToken;
-                getFileList(token, file_path)
+                getFileListFromMultiplePaths(token, file_paths)
                     .then((result) => {
                         setGraphData(result);
                     })
@@ -30,12 +30,17 @@ export const FilesList = () => {
     return (
         <>
             <h5 className="api">Files List</h5>
-            <label>
-                File Path: <input id="fileslist_file_path" />
-            </label>
             <Button variant="secondary" onClick={RequestData}>
                 Get Files List
             </Button>
+            <br />
+            <label>
+                File Path: <input id="fileslist_file_path" />
+            </label>
+            <br />
+            <label>
+                File Path: <input id="fileslist_file_path" />
+            </label>
             {graphData ? (
                 <FilesListData graphData={graphData} />
             ) : (
