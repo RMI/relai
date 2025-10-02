@@ -21,7 +21,7 @@ export const PageLayout = (props) => {
         <>
             <Navbar bg="primary" variant="dark" className="navbarStyle">
                 <a className="navbar-brand" href="/">
-                    Microsoft Identity Platform
+                    Relai Suggestions
                 </a>
                 <div className="collapse navbar-collapse justify-content-end">
                     {isAuthenticated ? <SignOutButton /> : <SignInButton />}
