@@ -53,7 +53,7 @@ export const ChatCompletion = () => {
                     const token = response.accessToken;
 
                     const file_paths = Array.from(document.querySelectorAll("#file_path"), e => e.value);
-                    const selected_chats = document.querySelector('input[name="chat_id"]:checked');
+                    const selected_chats_ids = Array.from(document.querySelectorAll("input[name='chat_id']:checked"), e => e.value);
                     const selected_channels = document.querySelector('input[name="teamchannel_id"]:checked');
                     const selected_group = document.querySelector('input[name="group_select"]:checked');
                     const group_file_paths = Array.from(document.querySelectorAll("#group_file_path"), e => e.value);
