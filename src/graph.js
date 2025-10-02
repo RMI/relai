@@ -137,7 +137,7 @@ export async function getGroupFileList(accessToken, group_id, file_path, daysBef
 }
 
 export async function getGroupFilesContent(accessToken, group_id, file_path, daysBefore = daysBefore_global) {
-    const file_list = await getGroupFileList(accessToken, group_id, file_path);
+    let file_list = await getGroupFileList(accessToken, group_id, file_path);
 
     // filter to files that officeParser can parse
     // https://github.com/harshankur/officeParser?tab=readme-ov-file#supported-file-types
