@@ -15,6 +15,8 @@ const MainContent = () => {
                 <component.ChatCompletion />
                 <component.ChatListContent />
                 <component.TeamChannelsListContent />
+                <component.GroupsList />
+                <component.GroupFilePath />
                 <hr />
                 <Button variant="secondary" onClick={() => setOpen(!open)} aria-controls="utilities-collapse-text" aria-expanded={open}>
                     toggle utilities
@@ -25,11 +27,13 @@ const MainContent = () => {
                         <component.ProfileContent />
                         <component.APIContent />
                         <component.EmailContent />
-                        <component.GroupsContent />
                         <component.ChatMessagesContent />
                         <component.ChannelMessageListContent />
                         <component.FilesList />
                         <component.FilesContent />
+                        <component.GroupsContent />
+                        <component.GroupFilesList />
+                        <component.GroupFilesContent />
                     </div>
                 </Collapse>
             </AuthenticatedTemplate>
