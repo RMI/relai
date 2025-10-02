@@ -12,7 +12,7 @@ export const GroupFilesContent = () => {
 
     function RequestData(formData) {
         const group_id = document.getElementById("groupfilescontent_group_id").value;
-        const file_path = document.getElementById("groupfilescontent_file_path").value;
+        const file_paths = Array.from(document.querySelectorAll("#groupfilescontent_file_path"), e => e.value);
 
         instance
             .acquireTokenSilent({
@@ -21,7 +21,7 @@ export const GroupFilesContent = () => {
             })
             .then((response) => {
                 const token = response.accessToken;
-                getGroupFilesContent(token, group_id, file_path)
+                getGroupFilesContent(token, group_id, file_paths)
                     .then((result) => {
                         setGraphData(result);
                     })
@@ -31,15 +31,33 @@ export const GroupFilesContent = () => {
     return (
         <>
             <h5 className="api">Group Files Content</h5>
-            <label>
-                Group ID: <input id="groupfilescontent_group_id" />
-            </label>
-            <label>
-                File Path: <input id="groupfilescontent_file_path" />
-            </label>
             <Button variant="secondary" onClick={RequestData}>
                 Get Group Files Content
             </Button>
+            <br />
+            <label>
+                Group ID: <input id="groupfilescontent_group_id" />
+            </label>
+            <br />
+            <label>
+                File Path: <input id="groupfilescontent_file_path" />
+            </label>
+            <br />
+            <label>
+                File Path: <input id="groupfilescontent_file_path" />
+            </label>
+            <br />
+            <label>
+                File Path: <input id="groupfilescontent_file_path" />
+            </label>
+            <br />
+            <label>
+                File Path: <input id="groupfilescontent_file_path" />
+            </label>
+            <br />
+            <label>
+                File Path: <input id="groupfilescontent_file_path" />
+            </label>
             {graphData ? (
                 <GroupFilesContentData graphData={graphData} />
             ) : (

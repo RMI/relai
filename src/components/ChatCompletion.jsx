@@ -56,7 +56,7 @@ export const ChatCompletion = () => {
                     const selected_chats = document.querySelector('input[name="chat_id"]:checked');
                     const selected_channels = document.querySelector('input[name="teamchannel_id"]:checked');
                     const selected_group = document.querySelector('input[name="group_select"]:checked');
-                    const group_file_path = document.getElementById("group_file_path").value;
+                    const group_file_paths = Array.from(document.querySelectorAll("#group_file_path"), e => e.value);
 
                     const email = getEmail(token);
 
@@ -78,10 +78,10 @@ export const ChatCompletion = () => {
                         channel_msgs = getChannelMessageList(token, team_id, channel_id);
                     }
 
-                    let group_file_content = Promise.resolve({value:[]});
+                    let group_file_content = Promise.resolve([]);
                     if (selected_group !== null) {
                         const group_id = selected_group.dataset.group_id;
-                        group_file_content = getGroupFilesContent(token, group_id, group_file_path);
+                        group_file_content = getGroupFilesContent(token, group_id, group_file_paths);
                     }
 
                     Promise.all([email, file_content, chat_msgs, channel_msgs, group_file_content])

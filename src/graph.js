@@ -136,8 +136,22 @@ export async function getGroupFileList(accessToken, group_id, file_path, daysBef
     return file_list;
 }
 
-export async function getGroupFilesContent(accessToken, group_id, file_path, daysBefore = daysBefore_global) {
-    let file_list = await getGroupFileList(accessToken, group_id, file_path);
+export async function getGroupFileListFromMultiplePaths(accessToken, group_id, file_paths, daysBefore = daysBefore_global) {
+  file_paths = file_paths.filter(e => e); // remove null, undefined, and ""
+
+  const file_paths_uniq = [...new Set(file_paths)];
+
+  const filelists_promise = file_paths_uniq
+  .map(file_path => getGroupFileList(accessToken, group_id, file_path, daysBefore));
+
+  let filelists = await Promise.all(filelists_promise);
+  filelists = filelists.flat();
+
+  return filelists;
+}
+
+export async function getGroupFilesContent(accessToken, group_id, file_paths, daysBefore = daysBefore_global) {
+    let file_list = await getGroupFileListFromMultiplePaths(accessToken, group_id, file_paths);
 
     // filter to files that officeParser can parse
     // https://github.com/harshankur/officeParser?tab=readme-ov-file#supported-file-types
