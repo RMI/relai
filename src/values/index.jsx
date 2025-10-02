@@ -1,8 +1,8 @@
-import { systemPrompt, userPrompt } from './Prompts';
+import { systemPrompt, createUserPrompt } from './Prompts';
 import { daysBefore_global } from './daysBefore_global';
 
 export {
-    systemPrompt,
-    userPrompt,
-    daysBefore_global
+  systemPrompt,
+  daysBefore_global,
+  createUserPrompt
 }
