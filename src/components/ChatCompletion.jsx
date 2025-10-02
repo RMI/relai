@@ -163,9 +163,9 @@ export const ChatCompletion = () => {
             <br />
             <br />
             <h5 className="filepath_head">File Paths</h5>
-            <input id="file_path" defaultValue="test_folder" />
+            <input id="file_path" />
             <br />
-            <input id="file_path" defaultValue="test_folder2" />
+            <input id="file_path" />
             <br/>
             <br/>
         </>
