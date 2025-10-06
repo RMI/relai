@@ -12,6 +12,9 @@ const MainContent = () => {
     return (
         <div className="App">
             <AuthenticatedTemplate>
+                <h5>test</h5>
+                <component.HelloWorld />
+                <hr />
                 <component.ChatCompletion />
                 <component.ChatListContent />
                 <component.TeamChannelsListContent />
@@ -40,6 +43,7 @@ const MainContent = () => {
 
             <UnauthenticatedTemplate>
                 <h5 className="card-title">Please sign-in to see your profile information.</h5>
+                <component.HelloWorld />
             </UnauthenticatedTemplate>
         </div>
     );
