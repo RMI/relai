@@ -5,7 +5,8 @@ app.http('message', {
     methods: ['GET', 'POST'],
     authLevel: 'anonymous',
     handler: async (request, context) => {
-        return { body: JSON.stringify({ "text": `Hello, from the API!` }) };
+        const text = process.env.TEST_SECRET_BACKEND_ENV_VAR;
+        return { body: JSON.stringify({ "text": text }) };
     }
 });
 
