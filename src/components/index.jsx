@@ -11,7 +11,6 @@ import { GroupsList } from './GroupsList';
 import { GroupFilesContent } from './GroupFilesContent';
 import { GroupFilesList } from './GroupFilesList';
 import { GroupFilePath } from './GroupFilePath';
-import { HelloEnvVar } from './HelloEnvVar';
 import { HelloWorld } from './HelloWorld';
 import { PageLayout } from './PageLayout';
 import { ProfileContent } from './ProfileContent';
@@ -33,7 +32,6 @@ export {
     GroupFilesContent,
     GroupFilesList,
     GroupFilePath,
-    HelloEnvVar,
     HelloWorld,
     PageLayout,
     ProfileContent,

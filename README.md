@@ -16,10 +16,23 @@ Create a `.env` file by copying the `.env.example` and entering the following in
 VITE_REACT_APP_CLIENT_ID="{your_client_id_here}"
 VITE_REACT_APP_AUTHORITY="https://login.microsoftonline.com/{your_tenant_id_here}"
 VITE_REACT_APP_REDIRECT_URI=http://localhost:3000
-VITE_AZURE_FOUNDRY_ENDPOINT="https://{SERVICE_NAME}.ai.azure.com"
-AZURE_FOUNDRY_KEY="{your_api_key}"
-VITE_AZURE_FOUNDRY_MODEL="gpt-4o"
-VITE_AZURE_FOUNDRY_API_VERSION="2024-05-01-preview"
+```
+
+The serverless API requires some env vars to access the Foundry API. Locally, these can be stored in a [api/local.settings.json](api/local.settings.json) file (which should never be pushed to the repo and is in [.gitignore](.gitignore)), and when running with `swa start build --api-location api` the Azure SWA CLI will simulate what the Azure system will do on the production environment making those env vars available to the serverless API backend only. For the production environment, these env vars need to be added in the Azure Portal config for the Static Web App under Settings > Environment Variables. For more info, see https://learn.microsoft.com/en-us/azure/static-web-apps/application-settings.
+
+The `api/local.settings.json` file should look like this:
+```json
+{
+  "IsEncrypted": false,
+  "Values": {
+    "AzureWebJobsStorage": "",
+    "FUNCTIONS_WORKER_RUNTIME": "node",
+    "AZURE_FOUNDRY_KEY": "{your_api_key}",
+    "AZURE_FOUNDRY_ENDPOINT": "https://rmi-data-ai.services.ai.azure.com",
+    "AZURE_FOUNDRY_MODEL": "gpt-4o",
+    "AZURE_FOUNDRY_API_VERSION": "2024-05-01-preview"
+  }
+}
 ```
 
 ## Available scripts
