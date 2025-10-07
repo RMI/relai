@@ -1,23 +1,14 @@
 const { app } = require('@azure/functions');
 const { AzureOpenAI } = require('openai');
 
-app.http('message', {
-    methods: ['GET', 'POST'],
-    authLevel: 'anonymous',
-    handler: async (request, context) => {
-        const text = process.env.TEST_SECRET_BACKEND_ENV_VAR;
-        return { body: JSON.stringify({ "text": text }) };
-    }
-});
-
 app.http('foundry', {
     methods: ['GET', 'POST'],
     authLevel: 'anonymous',
     handler: async (request, context) => {
-        const endpoint = process.env.VITE_AZURE_FOUNDRY_ENDPOINT;
+        const endpoint = process.env.AZURE_FOUNDRY_ENDPOINT;
         const apiKey = process.env.AZURE_FOUNDRY_KEY;
-        const apiVersion = process.env.VITE_AZURE_FOUNDRY_API_VERSION;
-        const deployment = process.env.VITE_AZURE_FOUNDRY_MODEL;
+        const apiVersion = process.env.AZURE_FOUNDRY_API_VERSION;
+        const deployment = process.env.AZURE_FOUNDRY_MODEL;
 
         const temperature = 0.2;
         const max_tokens = 800;
@@ -28,7 +19,7 @@ app.http('foundry', {
             apiKey,
             apiVersion,
             deployment,
-            dangerouslyAllowBrowser: true
+            dangerouslyAllowBrowser: false
           });
           const result = await client.chat.completions.create({
             messages: [
