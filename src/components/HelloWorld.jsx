@@ -52,16 +52,18 @@ export const HelloWorld = () => {
     if (selected_group !== null) {
       const group_id = selected_group.dataset.group_id;
       group_file_content = await getGroupFilesContent(token, group_id, group_file_paths);
-    }
 
-    return group_file_content.map(e => ({
+      group_file_content = group_file_content.map(e => ({
         id: e.id,
         type: "group file",
         date_time: e.lastModifiedDateTime,
         author: e.lastModifiedBy.user.displayName,
         content: e.text,
         subject: e.name
-    }));
+      }));
+    }
+
+    return group_file_content;
   }
 
   async function main() {
