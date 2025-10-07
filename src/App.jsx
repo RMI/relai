@@ -12,7 +12,10 @@ const MainContent = () => {
     return (
         <div className="App">
             <AuthenticatedTemplate>
-                <h5>test</h5>
+                <h5>Serverless API env var</h5>
+                <component.HelloEnvVar />
+                <hr />
+                <h5>Serverless API</h5>
                 <component.HelloWorld />
                 <hr />
                 <component.ChatCompletion />
@@ -47,8 +50,6 @@ const MainContent = () => {
                 <pre style={{textAlign: "left", whiteSpace: "pre-wrap"}}>
                     {JSON.stringify(import.meta.env, null, "\t")}
                 </pre>
-
-                <component.HelloWorld />
             </UnauthenticatedTemplate>
         </div>
     );
