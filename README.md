@@ -18,7 +18,7 @@ VITE_REACT_APP_AUTHORITY="https://login.microsoftonline.com/{your_tenant_id_here
 VITE_REACT_APP_REDIRECT_URI=http://localhost:3000
 ```
 
-The serverless API requires some env vars to access the Foundry API. Locally, these can be stored in a [api/local.settings.json](api/local.settings.json) file (which should never be pushed to the repo and is in [.gitignore](.gitignore)), and when running with `swa start build --api-location api` the Azure SWA CLI will simulate what the Azure system will do on the production environment making those env vars available to the serverless API backend only. For the production environment, these env vars need to be added in the Azure Portal config for the Static Web App under Settings > Environment Variables. For more info, see https://learn.microsoft.com/en-us/azure/static-web-apps/application-settings.
+The serverless API requires some env vars to access the Foundry API. Locally, these can be stored in a `api/local.settings.json` file (which should never be pushed to the repo and is in [.gitignore](.gitignore)), and when running with `swa start build --api-location api` the Azure SWA CLI will simulate what the Azure system will do on the production environment making those env vars available to the serverless API backend only. For the production environment, these env vars need to be added in the Azure Portal config for the Static Web App under Settings > Environment Variables. For more info, see https://learn.microsoft.com/en-us/azure/static-web-apps/application-settings.
 
 The `api/local.settings.json` file should look like this:
 ```json
