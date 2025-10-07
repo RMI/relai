@@ -12,6 +12,9 @@ const MainContent = () => {
     return (
         <div className="App">
             <AuthenticatedTemplate>
+                <h5>Serverless API env var</h5>
+                <component.HelloEnvVar />
+                <hr />
                 <h5>Serverless API</h5>
                 <component.HelloWorld />
                 <hr />
