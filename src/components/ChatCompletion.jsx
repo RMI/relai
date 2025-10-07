@@ -71,7 +71,7 @@ export const ChatCompletion = () => {
           }
 
           let channel_msgs = Promise.resolve([]);
-          if (selected_channels !== null && selected_channels.length >= 1) {
+          if (selected_channels && selected_channels.length >= 1) {
             const selected_team_ids = [...selected_channels].map(e => e.dataset.team_id);
             const selected_channels_ids = [...selected_channels].map(e => e.dataset.channel_id);
             channel_msgs = getChannelMessageList(token, selected_team_ids, selected_channels_ids);
