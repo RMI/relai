@@ -7,6 +7,7 @@ import { EmailData } from './EmailData';
 import { FilesContentData } from './FilesContentData';
 import { FilesListData } from './FilesListData';
 import { GroupData } from './GroupData';
+import { GroupDropdownData } from './GroupDropdownData';
 import { GroupListData } from './GroupListData';
 import { GroupFilesContentData } from './GroupFilesContentData';
 import { GroupFilesListData } from './GroupFilesListData';
@@ -23,6 +24,7 @@ export {
     FilesContentData,
     FilesListData,
     GroupData,
+    GroupDropdownData,
     GroupFilesContentData,
     GroupListData,
     GroupFilesListData,

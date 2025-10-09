@@ -14,6 +14,7 @@ export const TeamChannelsListData = (props) => {
                 <thead><tr>
                     <th>select</th>
                     <th>Channel Name</th>
+                    <th>Channel Description</th>
                     <th>Team</th>
                     <th>Team Description</th>
                     <th>link</th>
@@ -22,9 +23,18 @@ export const TeamChannelsListData = (props) => {
                     {data.map((data, index) => (
                         <tr key={index}>
                             <td>
-                                <input type="checkbox" id={data.id} name="teamchannel_id" data-channel_id={data.id} data-team_id={data.team_id} />
+                                <input
+                                    type = "checkbox"
+                                    id = {data.id}
+                                    name = "teamchannel_id"
+                                    data-channel_id = {data.id}
+                                    data-channel_name = {data.displayName}
+                                    data-team_id = {data.team_id}
+                                    data-team_name = {data.team_name}
+                                />
                             </td>
                             <td>{data.displayName}</td>
+                            <td>{data.description}</td>
                             <td>{data.team_name}</td>
                             <td>{data.team_desc}</td>
                             <td>

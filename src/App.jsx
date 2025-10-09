@@ -12,14 +12,22 @@ const MainContent = () => {
     return (
         <div className="App">
             <AuthenticatedTemplate>
-                <h5>Serverless API</h5>
-                <component.HelloWorld />
-                <hr />
-                <component.ChatCompletion />
+                <h5>RELAI Summary</h5>
+                <component.Summarize />
+                <br />
+                <h5 className="project_name_section">Project Name</h5>
+                <input id="project_name" />
+                <br />
+                <br />
                 <component.ChatListContent />
                 <component.TeamChannelsListContent />
                 <component.GroupsList />
                 <component.GroupFilePath />
+                <br />
+                <h5 className="group_files">non-member Team Files</h5>
+                <component.GroupDropdownContent />
+                <component.GroupDropdownContent />
+                <component.GroupDropdownContent />
                 <hr />
                 <Button variant="secondary" onClick={() => setOpen(!open)} aria-controls="utilities-collapse-text" aria-expanded={open}>
                     toggle utilities
