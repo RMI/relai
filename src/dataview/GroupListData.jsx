@@ -19,7 +19,12 @@ export const GroupListData = (props) => {
                     {data.map((data, index) => (
                         <tr key={index}>
                             <td>
-                                <input type="radio" name="group_select" data-group_id={data.id} />
+                                <input
+                                    type="radio"
+                                    name="group_select"
+                                    data-group_id={data.id}
+                                    data-group_name={data.displayName}
+                                />
                             </td>
                             <td>{data.displayName}</td>
                             <td>{data.id}</td>

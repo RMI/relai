@@ -19,7 +19,15 @@ export const ChatListData = (props) => {
                     {props.graphData.map((data, index) => (
                         <tr key={index}>
                             <td>
-                                <input type="checkbox" id={data.id} name="chat_id" value={data.id} />
+                                <input
+                                    type="checkbox"
+                                    id={data.id}
+                                    name="chat_id"
+                                    value={data.id}
+                                    data-id = {data.id}
+                                    data-chat_topic = {data.topic}
+                                    data-chat_members = {data.members.join(", ")}
+                                />
                             </td>
                             <td>{data.topic}</td>
                             <td>{data.members.join(", ")}</td>
