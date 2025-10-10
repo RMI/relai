@@ -24,7 +24,7 @@ const MainContent = () => {
                 <component.GroupsList />
                 <component.GroupFilePath />
                 <br />
-                <h5 className="group_files">non-member Team Files</h5>
+                <h5 className="group_files">SharePoint Files</h5>
                 <component.GroupDropdownContent />
                 <component.GroupDropdownContent />
                 <component.GroupDropdownContent />
