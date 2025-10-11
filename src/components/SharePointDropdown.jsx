@@ -4,13 +4,13 @@ import { useMsal } from '@azure/msal-react';
 
 import { loginRequest } from '../authConfig';
 import { getGraphResponse } from '../graph';
-import { GroupDropdownData } from '../dataview';
+import { SharePointDropdownData } from '../dataview';
 
-export const GroupDropdownContent = () => {
+export const SharePointDropdown = () => {
     const { instance, accounts } = useMsal();
     const [graphData, setGraphData] = useState(null);
 
-    const path_placeholder = "path to folder, e.g. '/RMI/CIP Docs/Reali'";
+    const path_placeholder = "path to folder, e.g. '/RMI/CIP Docs/RELAI'";
 
     function RequestData() {
         instance
@@ -36,19 +36,19 @@ export const GroupDropdownContent = () => {
             style = {{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}
         >
             <Form.Select
-                aria-label = "Select Group/Team"
+                aria-label = "Select SharePoint Site"
                 style = {{ maxWidth: '250px' }}
                 name = "group"
             >
-                <option>Select Group/Team</option>
+                <option>Select SharePoint Site</option>
                 {graphData &&
-                    <GroupDropdownData graphData={graphData} />
+                    <SharePointDropdownData graphData={graphData} />
                 }
             </Form.Select>
             <Form.Control
                 type = "text"
                 placeholder = {path_placeholder}
-                style = {{ maxWidth: '300px' }}
+                style = {{ maxWidth: '400px' }}
                 name = "path"
             />
         </div>

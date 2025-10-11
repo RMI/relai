@@ -7,11 +7,11 @@ import { EmailData } from './EmailData';
 import { FilesContentData } from './FilesContentData';
 import { FilesListData } from './FilesListData';
 import { GroupData } from './GroupData';
-import { GroupDropdownData } from './GroupDropdownData';
 import { GroupListData } from './GroupListData';
 import { GroupFilesContentData } from './GroupFilesContentData';
 import { GroupFilesListData } from './GroupFilesListData';
 import { ProfileData } from './ProfileData';
+import { SharePointDropdownData } from './SharePointDropdownData';
 import { TeamChannelsListData } from './TeamChannelsListData';
 
 export {
@@ -24,10 +24,10 @@ export {
     FilesContentData,
     FilesListData,
     GroupData,
-    GroupDropdownData,
     GroupFilesContentData,
     GroupListData,
     GroupFilesListData,
     ProfileData,
+    SharePointDropdownData,
     TeamChannelsListData
 }
