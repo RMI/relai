@@ -32,9 +32,7 @@ export const SharePointDropdown = () => {
     if (graphData === null) RequestData();
 
     return (
-        <div
-            name = 'sharepoint_files_select'
-        >
+        <div name = 'sharepoint_files_select'>
             <InputGroup className='container-md justify-content-center'>
                 <Form.Select
                     aria-label = "Select SharePoint Site"
