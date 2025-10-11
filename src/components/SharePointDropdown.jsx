@@ -38,7 +38,7 @@ export const SharePointDropdown = () => {
             <Form.Select
                 aria-label = "Select SharePoint Site"
                 style = {{ maxWidth: '250px' }}
-                name = "group"
+                name = "sharepoint"
             >
                 <option>Select SharePoint Site</option>
                 {graphData &&
@@ -49,7 +49,7 @@ export const SharePointDropdown = () => {
                 type = "text"
                 placeholder = {path_placeholder}
                 style = {{ maxWidth: '400px' }}
-                name = "path"
+                name = "sharepoint_path"
             />
         </div>
     );
