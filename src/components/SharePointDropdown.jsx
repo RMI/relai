@@ -32,7 +32,7 @@ export const SharePointDropdown = () => {
 
     return (
         <div
-            name = 'group_files_select'
+            name = 'sharepoint_files_select'
             style = {{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}
         >
             <Form.Select
