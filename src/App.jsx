@@ -19,7 +19,7 @@ const MainContent = () => {
                 <input id="project_name" />
                 <br />
                 <br />
-                <component.ChatListContent />
+                <component.Chats />
                 <component.TeamChannelsListContent />
                 <component.GroupsList />
                 <component.GroupFilePath />
