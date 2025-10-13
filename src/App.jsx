@@ -32,14 +32,6 @@ const MainContent = () => {
                         <br/>
                         <component.ProfileContent />
                         <component.APIContent />
-                        <component.EmailContent />
-                        <component.ChatMessagesContent />
-                        <component.ChannelMessageListContent />
-                        <component.FilesList />
-                        <component.FilesContent />
-                        <component.GroupsContent />
-                        <component.GroupFilesList />
-                        <component.GroupFilesContent />
                     </div>
                 </Collapse>
             </AuthenticatedTemplate>
