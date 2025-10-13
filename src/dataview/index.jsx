@@ -11,6 +11,7 @@ import { GroupDropdownData } from './GroupDropdownData';
 import { GroupFilesContentData } from './GroupFilesContentData';
 import { GroupFilesListData } from './GroupFilesListData';
 import { ProfileData } from './ProfileData';
+import { SharePointDropdownData } from './SharePointDropdownData';
 import { TeamChannelsListData } from './TeamChannelsListData';
 import { TeamsDropdownData } from './TeamsDropdownData';
 
@@ -24,10 +25,10 @@ export {
     FilesContentData,
     FilesListData,
     GroupData,
-    GroupDropdownData,
     GroupFilesContentData,
     GroupFilesListData,
     ProfileData,
+    SharePointDropdownData,
     TeamChannelsListData,
     TeamsDropdownData
 }
