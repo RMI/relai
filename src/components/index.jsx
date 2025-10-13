@@ -28,7 +28,6 @@ export {
     FilesContent,
     FilesList,
     GroupsContent,
-    GroupDropdownContent,
     GroupFilesContent,
     GroupFilesList,
     PageLayout,
