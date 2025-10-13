@@ -1,12 +1,13 @@
 import React, { useState } from 'react';
-import Button from 'react-bootstrap/Button';
 import { useMsal } from '@azure/msal-react';
+import Form from 'react-bootstrap/Form';
+import InputGroup from 'react-bootstrap/InputGroup';
 
 import { loginRequest } from '../authConfig';
 import { getChatList, getChatMembers } from '../graph';
-import { ChatListData } from '../dataview';
+import { ChatsDropdownData } from '../dataview';
 
-export const ChatListContent = () => {
+export const ChatsDropdown = () => {
     const { instance, accounts } = useMsal();
     const [graphData, setGraphData] = useState(null);
 
@@ -31,23 +32,27 @@ export const ChatListContent = () => {
                                     members: members[i]
                                 }));
                                 setGraphData(result);
-                            })
-                    })
+                            });
+                    });
             });
     }
 
     if (graphData === null) RequestData();
 
     return (
-        <>
-            <h5 className="chatList">Chat List</h5>
-            {graphData ? (
-                <ChatListData graphData={graphData} />
-            ) : (
-                <Button variant="secondary" onClick={RequestData}>
-                    Request Chat List
-                </Button>
-            )}
-        </>
+        <div name = 'chats_select'>
+            <InputGroup className='container-md justify-content-center'>
+                <Form.Select
+                    aria-label = "Select Chat"
+                    style = {{ maxWidth: '250px' }}
+                    name = "chat"
+                >
+                    <option>Select Chat</option>
+                    {graphData &&
+                        <ChatsDropdownData graphData={graphData} />
+                    }
+                </Form.Select>
+            </InputGroup>
+        </div>
     );
 };

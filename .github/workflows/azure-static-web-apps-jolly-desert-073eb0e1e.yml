@@ -48,9 +48,6 @@ jobs:
           VITE_REACT_APP_CLIENT_ID: "270e7c47-c240-4275-ba86-415dbe08fa4f"
           VITE_REACT_APP_AUTHORITY: "https://login.microsoftonline.com/fc90232c-a6ba-4f13-a8f1-283b00faf105"
           VITE_REACT_APP_REDIRECT_URI: "https://jolly-desert-073eb0e1e.2.azurestaticapps.net"
-          VITE_AZURE_FOUNDRY_ENDPOINT: "https://rmi-data-ai.services.ai.azure.com"
-          VITE_AZURE_FOUNDRY_MODEL: "gpt-4o"
-          VITE_AZURE_FOUNDRY_API_VERSION: "2024-05-01-preview"
           ###### End of Repository/Build Configurations ######
 
   close_pull_request_job:

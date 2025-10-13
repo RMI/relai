@@ -19,15 +19,10 @@ const MainContent = () => {
                 <input id="project_name" />
                 <br />
                 <br />
-                <component.ChatListContent />
+                <component.Chats />
                 <component.Channels />
-                <component.GroupsList />
-                <component.GroupFilePath />
-                <br />
-                <h5 className="group_files">SharePoint Files</h5>
-                <component.GroupDropdownContent />
-                <component.GroupDropdownContent />
-                <component.GroupDropdownContent />
+                <component.TeamsFiles />
+                <component.SharePointFiles />
                 <hr />
                 <Button variant="secondary" onClick={() => setOpen(!open)} aria-controls="utilities-collapse-text" aria-expanded={open}>
                     toggle utilities
