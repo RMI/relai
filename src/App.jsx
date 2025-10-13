@@ -20,7 +20,7 @@ const MainContent = () => {
                 <br />
                 <br />
                 <component.Chats />
-                <component.TeamChannelsListContent />
+                <component.Channels />
                 <component.TeamsFiles />
                 <component.SharePointFiles />
                 <hr />

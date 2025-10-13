@@ -1,5 +1,6 @@
 import { APIData } from './APIData';
 import { ChannelMessageData } from './ChannelMessageData';
+import { ChannelsDropdownData } from './ChannelsDropdownData';
 import { ChatCompletionData } from './ChatCompletionData';
 import { ChatMessagesData } from './ChatMessagesData';
 import { ChatsDropdownData } from './ChatsDropdownData';
@@ -11,12 +12,12 @@ import { GroupFilesContentData } from './GroupFilesContentData';
 import { GroupFilesListData } from './GroupFilesListData';
 import { ProfileData } from './ProfileData';
 import { SharePointDropdownData } from './SharePointDropdownData';
-import { TeamChannelsListData } from './TeamChannelsListData';
 import { TeamsDropdownData } from './TeamsDropdownData';
 
 export {
     APIData,
     ChannelMessageData,
+    ChannelsDropdownData,
     ChatCompletionData,
     ChatMessagesData,
     ChatsDropdownData,
@@ -28,6 +29,5 @@ export {
     GroupFilesListData,
     ProfileData,
     SharePointDropdownData,
-    TeamChannelsListData,
     TeamsDropdownData
 }

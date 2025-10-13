@@ -1,5 +1,7 @@
 import { APIContent } from './APIContent';
 import { ChannelMessageListContent } from './ChannelMessageListContent';
+import { Channels } from './Channels';
+import { ChannelsDropdown } from './ChannelsDropdown';
 import { ChatMessagesContent } from './ChatMessagesContent';
 import { Chats } from './Chats';
 import { ChatsDropdown } from './ChatsDropdown';
@@ -16,13 +18,14 @@ import { SharePointFiles } from './SharePointFiles';
 import { SignInButton } from './SignInButton';
 import { SignOutButton } from './SignOutButton';
 import { Summarize } from './Summarize';
-import { TeamChannelsListContent } from './TeamChannelsListContent';
 import { TeamsDropdown } from './TeamsDropdown';
 import { TeamsFiles } from './TeamsFiles';
 
 export {
     APIContent,
     ChannelMessageListContent,
+    Channels,
+    ChannelsDropdown,
     ChatMessagesContent,
     Chats,
     ChatsDropdown,
@@ -39,7 +42,6 @@ export {
     SignInButton,
     SignOutButton,
     Summarize,
-    TeamChannelsListContent,
     TeamsDropdown,
     TeamsFiles
 }
