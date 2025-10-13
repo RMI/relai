@@ -6,7 +6,6 @@ import { EmailContent } from './EmailContent';
 import { FilesContent } from './FilesContent';
 import { FilesList } from './FilesList';
 import { GroupsContent } from './GroupsContent';
-import { GroupDropdownContent } from './GroupDropdownContent';
 import { GroupFilesContent } from './GroupFilesContent';
 import { GroupFilesList } from './GroupFilesList';
 import { PageLayout } from './PageLayout';
