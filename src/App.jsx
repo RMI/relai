@@ -20,7 +20,7 @@ const MainContent = () => {
                 <br />
                 <br />
                 <component.ChatListContent />
-                <component.TeamChannelsListContent />
+                <component.Channels />
                 <component.GroupsList />
                 <component.GroupFilePath />
                 <br />

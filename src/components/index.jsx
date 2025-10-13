@@ -1,5 +1,7 @@
 import { APIContent } from './APIContent';
 import { ChannelMessageListContent } from './ChannelMessageListContent';
+import { Channels } from './Channels';
+import { ChannelsDropdown } from './ChannelsDropdown';
 import { ChatMessagesContent } from './ChatMessagesContent';
 import { ChatListContent } from './ChatListContent';
 import { EmailContent } from './EmailContent';
@@ -16,11 +18,12 @@ import { ProfileContent } from './ProfileContent';
 import { SignInButton } from './SignInButton';
 import { SignOutButton } from './SignOutButton';
 import { Summarize } from './Summarize';
-import { TeamChannelsListContent } from './TeamChannelsListContent';
 
 export {
     APIContent,
     ChannelMessageListContent,
+    Channels,
+    ChannelsDropdown,
     ChatMessagesContent,
     ChatListContent,
     EmailContent,
@@ -36,6 +39,5 @@ export {
     ProfileContent,
     SignInButton,
     SignOutButton,
-    Summarize,
-    TeamChannelsListContent
+    Summarize
 }
