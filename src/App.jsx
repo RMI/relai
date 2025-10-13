@@ -21,8 +21,7 @@ const MainContent = () => {
                 <br />
                 <component.ChatListContent />
                 <component.TeamChannelsListContent />
-                <component.GroupsList />
-                <component.GroupFilePath />
+                <component.TeamsFiles />
                 <component.SharePointFiles />
                 <hr />
                 <Button variant="secondary" onClick={() => setOpen(!open)} aria-controls="utilities-collapse-text" aria-expanded={open}>
