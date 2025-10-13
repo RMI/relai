@@ -11,8 +11,6 @@ export const ChatsDropdown = () => {
     const { instance, accounts } = useMsal();
     const [graphData, setGraphData] = useState(null);
 
-    const path_placeholder = "path to folder, e.g. '/RMI/CIP Docs/RELAI'";
-
     function RequestData() {
         instance
             .acquireTokenSilent({
