@@ -1,7 +1,6 @@
 import React from "react";
-import Form from 'react-bootstrap/Form';
 
-export const GroupDropdownData = (props) => {
+export const SharePointDropdownData = (props) => {
     let data = props.graphData;
 
     return (
@@ -17,5 +16,4 @@ export const GroupDropdownData = (props) => {
             ))}
         </>
     );
-
 };

@@ -2,11 +2,11 @@ import { getGroupFileList } from '../graph';
 import { getGroupFilesContent } from '../graph';
 
 export async function get_site_files(token) {
-  const site_selectors = [...document.querySelectorAll("select[name='group']")];
+  const site_selectors = [...document.querySelectorAll("select[name='sharepoint']")];
   let selected_site_ids = site_selectors.map(e => e.querySelector(':checked').dataset.id);
   let selected_site_names = site_selectors.map(e => e.querySelector(':checked').dataset.name);
 
-  const site_path_elems = document.querySelectorAll("input[name='path']");
+  const site_path_elems = document.querySelectorAll("input[name='sharepoint_path']");
   let selected_site_paths = [...site_path_elems].map(e => e.value);
 
   const non_empty_site_idxs = selected_site_ids.reduce((a, v, i) => { if (v && v !== '') { a.push(i) } return a }, []);
