@@ -7,7 +7,6 @@ import { EmailData } from './EmailData';
 import { FilesContentData } from './FilesContentData';
 import { FilesListData } from './FilesListData';
 import { GroupData } from './GroupData';
-import { GroupDropdownData } from './GroupDropdownData';
 import { GroupFilesContentData } from './GroupFilesContentData';
 import { GroupFilesListData } from './GroupFilesListData';
 import { ProfileData } from './ProfileData';
