@@ -1,7 +1,8 @@
 import { APIContent } from './APIContent';
 import { ChannelMessageListContent } from './ChannelMessageListContent';
 import { ChatMessagesContent } from './ChatMessagesContent';
-import { ChatListContent } from './ChatListContent';
+import { Chats } from './Chats';
+import { ChatsDropdown } from './ChatsDropdown';
 import { EmailContent } from './EmailContent';
 import { FilesContent } from './FilesContent';
 import { FilesList } from './FilesList';
@@ -23,7 +24,8 @@ export {
     APIContent,
     ChannelMessageListContent,
     ChatMessagesContent,
-    ChatListContent,
+    Chats,
+    ChatsDropdown,
     EmailContent,
     FilesContent,
     FilesList,

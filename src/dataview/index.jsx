@@ -1,8 +1,8 @@
 import { APIData } from './APIData';
 import { ChannelMessageData } from './ChannelMessageData';
 import { ChatCompletionData } from './ChatCompletionData';
-import { ChatListData } from './ChatListData';
 import { ChatMessagesData } from './ChatMessagesData';
+import { ChatsDropdownData } from './ChatsDropdownData';
 import { EmailData } from './EmailData';
 import { FilesContentData } from './FilesContentData';
 import { FilesListData } from './FilesListData';
@@ -18,8 +18,8 @@ export {
     APIData,
     ChannelMessageData,
     ChatCompletionData,
-    ChatListData,
     ChatMessagesData,
+    ChatsDropdownData,
     EmailData,
     FilesContentData,
     FilesListData,
