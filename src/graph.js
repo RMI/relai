@@ -227,7 +227,7 @@ export function getStartFromDateStr(daysBefore = daysBefore_global) {
 
     var currentDate = new Date();
     var startFromDate = incrementDate(currentDate, -daysBefore);
-    var startFromDateStr = startFromDate.getFullYear() + "-" + padToTwo(startFromDate.getMonth()+1) + "-" + startFromDate.getDate();
+    var startFromDateStr = startFromDate.getFullYear() + "-" + padToTwo(startFromDate.getMonth()+1) + "-" + padToTwo(startFromDate.getDate());
 
     return startFromDateStr;
 }
