@@ -15,9 +15,15 @@ export function Channels() {
         <>
             <h5 className="channels">Team Channels</h5>
             <form id='Channels'>
-                {dropdowns}
-                <Button variant='secondary' onClick={handleAddDropdown}>
-                    <i class="bi bi-plus" />
+                <div className="mb-3">
+                    {dropdowns.map((dropdown, index) => (
+                        <div key={index} className="mb-2">
+                            {dropdown}
+                        </div>
+                    ))}
+                </div>
+                <Button variant='secondary' onClick={handleAddDropdown} className="d-flex align-items-center">
+                    <i className="bi bi-plus me-2"></i> Add Channel
                 </Button>
             </form>
         </>

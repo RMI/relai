@@ -15,7 +15,7 @@ export const SignInButton = () => {
         });
     }
     return (
-        <Button variant="secondary" onClick={() => handleLogin()}>
+        <Button variant="primary" onClick={() => handleLogin()} className="px-4 fw-medium">
             Sign In
         </Button>
     )

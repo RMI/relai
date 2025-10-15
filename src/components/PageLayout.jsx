@@ -5,6 +5,7 @@
 
 import React from 'react';
 import Navbar from 'react-bootstrap/Navbar';
+import Container from 'react-bootstrap/Container';
 
 import { useIsAuthenticated } from '@azure/msal-react';
 import { SignInButton } from './SignInButton';
@@ -19,22 +20,22 @@ export const PageLayout = (props) => {
 
     return (
         <>
-            <Navbar bg="primary" variant="dark" className="navbarStyle">
-                <a className="navbar-brand" href="/">
-                    Relai Suggestions
-                </a>
-                <div className="collapse navbar-collapse justify-content-end">
-                    {isAuthenticated ? <SignOutButton /> : <SignInButton />}
-                </div>
+            <Navbar style={{ color: 'var(--color-bluespruce)' }} className="navbarStyle mb-4 sticky-top">
+                <Container>
+                    <a className="navbar-brand" href="/" style={{ color: 'var(--color-energy)', fontWeight: 600 }}>
+                        Relai Suggestions
+                    </a>
+                    <div className="d-flex justify-content-end">
+                        {isAuthenticated ? <SignOutButton /> : <SignInButton />}
+                    </div>
+                </Container>
             </Navbar>
-                <div className="title">
-                    <h5>
-                        Welcome to RELAI Project Status Summarization
-                    </h5>
-                </div>
-                <div className="profileContent">
-                    {props.children}
-                </div>
+            <div className="title mb-4">
+                Welcome to RELAI Project Status Summarization
+            </div>
+            <Container>
+                {props.children}
+            </Container>
         </>
     );
 };

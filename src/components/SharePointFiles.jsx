@@ -15,9 +15,15 @@ export function SharePointFiles() {
         <>
             <h5 className="sharepoint_files">SharePoint Files</h5>
             <form id='SharePointFiles'>
-                {dropdowns}
-                <Button variant='secondary' onClick={handleAddDropdown}>
-                    <i class="bi bi-plus" />
+                <div className="mb-3">
+                    {dropdowns.map((dropdown, index) => (
+                        <div key={index} className="mb-2">
+                            {dropdown}
+                        </div>
+                    ))}
+                </div>
+                <Button variant='secondary' onClick={handleAddDropdown} className="d-flex align-items-center">
+                    <i className="bi bi-plus me-2"></i> Add SharePoint Files
                 </Button>
             </form>
         </>
