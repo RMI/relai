@@ -1,5 +1,40 @@
 @import url('bootstrap-icons/font/bootstrap-icons.css');
 
+:root {
+  /* Primary colours */
+  --color-bluespruce: #003b63;
+  --color-energy: #45cfcc;
+  --color-basalt: #58595b;
+
+  /* Accent colours */
+  --color-energy-100: #b6f2f1;
+  --color-energy-400: #7be8e6;
+  --color-energy-700: #2ab5b2;
+  --color-energy-800: #118280;
+
+  /* Success colours */
+  --color-success-400: #5ce5a1;
+  --color-success-600: #00cc66;
+  --color-success-800: #00994d;
+
+  /* Error colours */
+  --color-error-400: #f7988b;
+  --color-error-600: #df4e39;
+  --color-error-800: #ab3c2c;
+
+  /* Neutral colours */
+  --color-neutral-50: #f4f7f9;
+  --color-neutral-100: #ecf1f4;
+  --color-neutral-200: #e4e9ee;
+  --color-neutral-300: #d6dde2;
+  --color-neutral-400: #bdc9d3;
+  --color-neutral-500: #b3bcc5;
+  --color-neutral-600: #86929d;
+  --color-neutral-700: #646e77;
+  --color-neutral-800: #3b444d;
+  --color-neutral-900: #1d2328;
+}
+
 body {
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
@@ -7,6 +42,8 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  background-color: var(--color-neutral-50);
+  color: var(--color-neutral-800);
 }
 
 code {

@@ -16,7 +16,7 @@ export const SignOutButton = () => {
 
 
     return (
-        <Button variant="secondary" onClick={() => handleLogout()}>
+        <Button variant="outline-secondary" onClick={() => handleLogout()} className="px-4 fw-medium">
             Sign Out
         </Button>
     )
