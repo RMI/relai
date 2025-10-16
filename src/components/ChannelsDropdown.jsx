@@ -53,9 +53,11 @@ export const ChannelsDropdown = () => {
                     style = {{ maxWidth: '400px' }}
                     name = "channel"
                 >
-                    <option>Select Team Channel</option>
                     {graphData &&
-                        <ChannelsDropdownData graphData={graphData} />
+                        <>
+                            <option>Select Team Channel</option>
+                            <ChannelsDropdownData graphData={graphData} />
+                        < />
                     }
                 </Form.Select>
             </InputGroup>
