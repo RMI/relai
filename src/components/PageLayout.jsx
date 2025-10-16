@@ -20,7 +20,7 @@ export const PageLayout = (props) => {
 
     return (
         <>
-            <Navbar style={{ color: 'var(--color-bluespruce)' }} className="navbarStyle mb-4 sticky-top">
+            <Navbar className="navbarStyle mb-4 sticky-top">
                 <Container>
                     <a className="navbar-brand" href="/" style={{ color: 'var(--color-energy)', fontWeight: 600 }}>
                         Relai Suggestions
