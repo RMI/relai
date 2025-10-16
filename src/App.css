@@ -6,7 +6,7 @@
 
 .navbarStyle {
   padding: .75rem 1.5rem !important;
-  background-color: white !important;
+  background-color: var(--color-bluespruce) !important;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
 }
 
