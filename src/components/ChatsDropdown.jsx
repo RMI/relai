@@ -47,9 +47,11 @@ export const ChatsDropdown = () => {
                     style = {{ maxWidth: '250px' }}
                     name = "chat"
                 >
-                    <option>Select Chat</option>
                     {graphData &&
-                        <ChatsDropdownData graphData={graphData} />
+                        <>
+                            <option>Select Chat</option>
+                            <ChatsDropdownData graphData={graphData} />
+                        < />
                     }
                 </Form.Select>
             </InputGroup>

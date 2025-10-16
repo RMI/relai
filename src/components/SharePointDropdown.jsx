@@ -39,9 +39,11 @@ export const SharePointDropdown = () => {
                     style = {{ maxWidth: '250px' }}
                     name = "sharepoint"
                 >
-                    <option>Select SharePoint Site</option>
                     {graphData &&
-                        <SharePointDropdownData graphData={graphData} />
+                        <>
+                            <option>Select SharePoint Site</option>
+                            <SharePointDropdownData graphData={graphData} />
+                        < />
                     }
                 </Form.Select>
                 <Form.Control

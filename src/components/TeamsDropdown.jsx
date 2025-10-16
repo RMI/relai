@@ -37,9 +37,11 @@ export const TeamsDropdown = () => {
                     style = {{ maxWidth: '250px' }}
                     name = "team"
                 >
-                    <option>Select Team</option>
                     {graphData &&
-                        <TeamsDropdownData graphData={graphData} />
+                        <>
+                            <option>Select Team</option>
+                            <TeamsDropdownData graphData={graphData} />
+                        < />
                     }
                 </Form.Select>
                 <Form.Control
