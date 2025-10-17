@@ -83,7 +83,7 @@ const MainContent = () => {
 
             <UnauthenticatedTemplate>
                 <div className="content-card text-center py-5">
-                    <h5 className="card-title mb-4">Please sign-in to see your profile information.</h5>
+                    <h5 className="card-title mb-4">Please sign-in</h5>
                     <component.SignInButton />
                 </div>
             </UnauthenticatedTemplate>
