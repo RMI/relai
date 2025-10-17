@@ -10,6 +10,7 @@ import { get_onedrive_files } from '../get_content';
 import { get_team_files } from '../get_content';
 import { get_site_files } from '../get_content';
 import { systemPrompt, createUserPrompt } from '../values';
+import { CopyButton } from '@/components/ui/shadcn-io/copy-button';
 
 export const Summarize = () => {
   const [data, setData] = useState('');
@@ -73,6 +74,7 @@ export const Summarize = () => {
           <pre className="text-start" style={{ whiteSpace: "pre-wrap", fontFamily: "inherit", fontSize: "0.95rem", lineHeight: "1.6" }}>
             {data}
           </pre>
+          <CopyButton content={data} size="md" />
         </div>
       ) : (
         <div className="text-muted mt-3">
