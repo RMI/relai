@@ -5,18 +5,27 @@
   "dependencies": {
     "@azure/msal-browser": "^4.22.1",
     "@azure/msal-react": "^3.0.19",
+    "@tailwindcss/vite": "^4.1.14",
     "bootstrap": "^5.3.8",
     "bootstrap-icons": "1.13.1",
+    "class-variance-authority": "^0.7.1",
+    "clsx": "^2.1.1",
     "dotenv": "^17.2.2",
+    "lucide-react": "^0.546.0",
+    "motion": "^12.23.24",
     "openai": "^5.22.0",
     "react": "^19.1.1",
     "react-bootstrap": "^2.10.10",
     "react-dom": "^19.1.1",
+    "tailwind-merge": "^3.3.1",
+    "tailwindcss": "^4.1.14",
     "web-vitals": "^5.1.0"
   },
   "devDependencies": {
     "@azure/static-web-apps-cli": "^2.0.7",
     "@vitejs/plugin-react": "^5.0.2",
+    "tw-animate-css": "^1.4.0",
+    "typescript": "^5.9.3",
     "vite": "^7.1.9"
   },
   "scripts": {
