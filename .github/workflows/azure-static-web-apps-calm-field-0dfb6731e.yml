@@ -45,8 +45,8 @@ jobs:
           output_location: "build" # Built app content directory - optional
           github_id_token: ${{ steps.idtoken.outputs.result }}
         env:
-          VITE_REACT_APP_CLIENT_ID: "270e7c47-c240-4275-ba86-415dbe08fa4f"
-          VITE_REACT_APP_AUTHORITY: "https://login.microsoftonline.com/fc90232c-a6ba-4f13-a8f1-283b00faf105"
+          VITE_REACT_APP_CLIENT_ID: "49e8396f-c0cb-43ad-8fdf-44692588574a"
+          VITE_REACT_APP_AUTHORITY: "https://login.microsoftonline.com/8ed8a585-d8e6-4b00-b9cc-d370783559f6"
           VITE_REACT_APP_REDIRECT_URI: "https://calm-field-0dfb6731e.3.azurestaticapps.net"
           ###### End of Repository/Build Configurations ######
 
@@ -61,4 +61,5 @@ jobs:
         with:
           azure_static_web_apps_api_token: ${{ secrets.AZURE_STATIC_WEB_APPS_API_TOKEN_CALM_FIELD_0DFB6731E }}
           action: "close"
+
 
